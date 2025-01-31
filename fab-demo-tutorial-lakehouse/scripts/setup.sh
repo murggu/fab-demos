@@ -35,12 +35,17 @@ create_staging(){
     echo "* Done"
 }
 
+if [ "$enable_spn_auth" == "true" ]; then
+    run_fab_command "auth login -u 896ce0db-0a7b-441e-a2b3-63de272f9839 -p Hcp8Q~azggAebMLEU.A.Vfjf-HqmUCOyBLEixbv8 --tenant 7ef11dbd-fb56-439b-9d64-47d2c9fc4dd9"
+fi
+
 read_config
 create_staging
 
 _stg_tmdl_expressions="$staging_dir/wwilakehouse.SemanticModel/definition/expressions.tmdl"
 _stg_pip_json="$staging_dir/IngestDataFromSourceToLakehouse.DataPipeline/pipeline-content.json"
 _sas_token="sv=2022-11-02&ss=b&srt=co&sp=rlx&se=2026-12-31T18:59:36Z&st=2025-01-31T10:59:36Z&spr=https&sig=aL%2FIOiwz2AEj1fL9tRxH%2B4z%2FyfBl8qJ3KXinfPlaSEM%3D"
+_stg_report_json="$staging_dir/Profit Reporting.Report/definition.pbir"
 
 # create a domain
 echo -e "\n_ creating a domain..."
@@ -52,28 +57,29 @@ echo -e "\n_ creating a workspace..."
 run_fab_command "create /${workspace_name}.Workspace -P capacityName=${capacity_name}"
 echo "* Done"
 
+if [ "$enable_spn_auth" == "true" ]; then
+    echo -e "\n_ assigning permissions to workspace..."
+    run_fab_command "acl set -f /${workspace_name}.Workspace -I $upn_objectid -R admin"
+    echo "* Done"
+fi
+
 # create a lakehouse
 echo -e "\n_ creating a lakehouse..."
 run_fab_command "create /${workspace_name}.Workspace/${lakehouse_name}.Lakehouse"
 echo "* Done"
 
-# # create a connection
-# echo -e "\n_ creating a Blob connection..."
-# run_fab_command "create .connections/conn_blob.Connection -P connectionDetails.type=HttpServer,connectionDetails.parameters.url=https://assetsprod.microsoft.com/en-us/wwi-sample-dataset.zip,credentialDetails.type=Anonymous,credentialDetails.singleSignOnType=None,credentialDetails.connectionEncryption=NotEncrypted,credentialDetails.skipTestConnection=false"
-# echo "* Done"
-
 # create a connection
 echo -e "\n_ creating a connection..."
-run_fab_command "create .connections/conn_stfabdemos_blob.Connection -P .connections/example001.Connection -P connectionDetails.type=AzureBlobs,connectionDetails.parameters.account=stfabdemos,connectionDetails.parameters.domain=blob.core.windows.net/fabdata,credentialDetails.type=Anonymous"
+run_fab_command "create .connections/conn_stfabdemos_blob_${workspace_name}.Connection -P .connections/example001.Connection -P connectionDetails.type=AzureBlobs,connectionDetails.parameters.account=stfabdemos,connectionDetails.parameters.domain=blob.core.windows.net/fabdata,credentialDetails.type=Anonymous"
 echo "* Done"
 
 echo -e "\n_ creating a ADLS Gen2 connection..."
-run_fab_command "create .connections/conn_stfabdemos_adlsgen2.connection -P connectionDetails.type=AzureDataLakeStorage,connectionDetails.parameters.server=stfabdemos.dfs.core.windows.net,connectionDetails.parameters.path=fabdata,credentialDetails.type=SharedAccessSignature,credentialDetails.Token=$_sas_token"
+run_fab_command "create .connections/conn_stfabdemos_adlsgen2_${workspace_name}.connection -P connectionDetails.type=AzureDataLakeStorage,connectionDetails.parameters.server=stfabdemos.dfs.core.windows.net,connectionDetails.parameters.path=fabdata,credentialDetails.type=SharedAccessSignature,credentialDetails.Token=$_sas_token"
 echo "* Done"
 
 echo -e "\n_ getting metadata..."
-_connection_id_blob=$(run_fab_command "get .connections/conn_stfabdemos_blob.Connection -q id" | tr -d '\r')
-_connection_id_adlsgen2=$(run_fab_command "get .connections/conn_stfabdemos_adlsgen2.Connection -q id" | tr -d '\r')
+_connection_id_blob=$(run_fab_command "get .connections/conn_stfabdemos_blob_${workspace_name}.Connection -q id" | tr -d '\r')
+_connection_id_adlsgen2=$(run_fab_command "get .connections/conn_stfabdemos_adlsgen2_${workspace_name}.Connection -q id" | tr -d '\r')
 _workspace_id=$(run_fab_command "get /${workspace_name}.Workspace -q id" | tr -d '\r')
 _lakehouse_id=$(run_fab_command "get /${workspace_name}.Workspace/${lakehouse_name}.Lakehouse -q id" | tr -d '\r')
 _lakehouse_conn_string=$(run_fab_command "get /${workspace_name}.Workspace/${lakehouse_name}.Lakehouse -q properties.sqlEndpointProperties.connectionString" | tr -d '\r')
@@ -122,14 +128,11 @@ echo -e "\n___ replacing notebook metadata (rebind to lakehouse)..."
 run_fab_command "set -f /${workspace_name}.Workspace/02 - Data Transformation - Business Aggregates.Notebook -q lakehouse -i '{\"known_lakehouses\": [{\"id\": \"${_lakehouse_id}\"}],\"default_lakehouse\": \"${_lakehouse_id}\",\"default_lakehouse_name\": \"${lakehouse_name}\",\"default_lakehouse_workspace_id\": \"${_workspace_id}\"}'"
 echo "* Done"
 
-echo -e "\n___ replacing report metadata (rebind to semantic model)..."
-run_fab_command "set -f /${workspace_name}.Workspace/Profit Reporting.Report -q semanticModelId -i ${_semantic_model_id}"
-
 # shortcut
 echo -e "\n_ creating a shortcut to ADLS Gen2..."
 run_fab_command "ln /${workspace_name}.Workspace/${lakehouse_name}.Lakehouse/Files/wwi-raw-data.Shortcut --type adlsGen2 -i \"{\"location\": \"https://stfabdemos.dfs.core.windows.net/\", \"subpath\": \"fabdata/WideWorldImportersDW\", \"connectionId\": \"${_connection_id_adlsgen2}\"}\" -f"
 
-running jobs
+# running jobs
 echo -e "\n_ running jobs..."
 
 echo -e "\n___ running pipeline..."
@@ -163,6 +166,13 @@ echo "* Done"
 
  # report
 _semantic_model_id=$(run_fab_command "get /${workspace_name}.Workspace/wwilakehouse1.SemanticModel -q id" | tr -d '\r')
+echo $_semantic_model_id
+
+echo -e "\n ___ replacing report metadata (rebind to semantic model)..."
+jq --arg semantic_model_id "$_semantic_model_id" \
+   '.datasetReference.byConnection.pbiModelDatabaseName = $semantic_model_id' \
+    "$_stg_report_json" > "$_stg_report_json.tmp" && mv "$_stg_report_json.tmp" "$_stg_report_json"
+echo "* Done"
 
 echo -e "\n___ importing a report..."
 run_fab_command "import -f /${workspace_name}.Workspace/Profit Reporting.Report -i ${staging_dir}/Profit Reporting.Report"
