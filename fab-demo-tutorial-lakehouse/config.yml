@@ -6,5 +6,9 @@ variables:
   domain_name: "tutorials"
   lakehouse_name: "wwilakehouse"
 
+  # SPN auth
+  enable_spn_auth: "true"
+  upn_objectid: "395d4722-e034-4fe5-a95c-525d5b0adeeb"
+
   # Internals - do not touch
   staging_dir: "./tmp"
