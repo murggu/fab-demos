@@ -40,6 +40,7 @@ create_staging
 
 _stg_tmdl_expressions="$staging_dir/wwilakehouse.SemanticModel/definition/expressions.tmdl"
 _stg_pip_json="$staging_dir/IngestDataFromSourceToLakehouse.DataPipeline/pipeline-content.json"
+_sas_token="sv=2022-11-02&ss=b&srt=co&sp=rlx&se=2026-12-31T18:59:36Z&st=2025-01-31T10:59:36Z&spr=https&sig=aL%2FIOiwz2AEj1fL9tRxH%2B4z%2FyfBl8qJ3KXinfPlaSEM%3D"
 
 # create a domain
 echo -e "\n_ creating a domain..."
@@ -53,26 +54,32 @@ echo "* Done"
 
 # create a lakehouse
 echo -e "\n_ creating a lakehouse..."
-run_fab_command "create /${workspace_name}.Workspace/${lakehouse_name}.Lakehouse -P schemasEnabled=${enable_lakehouse_schemas}"
+run_fab_command "create /${workspace_name}.Workspace/${lakehouse_name}.Lakehouse"
 echo "* Done"
 
 # # create a connection
-# echo -e "\n_ creating a connection..."
-# run_fab_command "create .connections/conn3.Connection -P connectionDetails.type=HttpServer,connectionDetails.parameters.url=https://assetsprod.microsoft.com/en-us/wwi-sample-dataset.zip,credentialDetails.type=Anonymous,credentialDetails.singleSignOnType=None,credentialDetails.connectionEncryption=NotEncrypted,credentialDetails.skipTestConnection=false"
+# echo -e "\n_ creating a Blob connection..."
+# run_fab_command "create .connections/conn_blob.Connection -P connectionDetails.type=HttpServer,connectionDetails.parameters.url=https://assetsprod.microsoft.com/en-us/wwi-sample-dataset.zip,credentialDetails.type=Anonymous,credentialDetails.singleSignOnType=None,credentialDetails.connectionEncryption=NotEncrypted,credentialDetails.skipTestConnection=false"
 # echo "* Done"
 
 # create a connection
 echo -e "\n_ creating a connection..."
-run_fab_command "create .connections/conn_stfabdemos.Connection -P .connections/example001.Connection -P connectionDetails.type=AzureBlobs,connectionDetails.parameters.account=stfabdemos,connectionDetails.parameters.domain=blob.core.windows.net/fabdata,credentialDetails.type=Anonymous"
+run_fab_command "create .connections/conn_stfabdemos_blob.Connection -P .connections/example001.Connection -P connectionDetails.type=AzureBlobs,connectionDetails.parameters.account=stfabdemos,connectionDetails.parameters.domain=blob.core.windows.net/fabdata,credentialDetails.type=Anonymous"
+echo "* Done"
+
+echo -e "\n_ creating a ADLS Gen2 connection..."
+run_fab_command "create .connections/conn_stfabdemos_adlsgen2.connection -P connectionDetails.type=AzureDataLakeStorage,connectionDetails.parameters.server=stfabdemos.dfs.core.windows.net,connectionDetails.parameters.path=fabdata,credentialDetails.type=SharedAccessSignature,credentialDetails.Token=$_sas_token"
 echo "* Done"
 
 echo -e "\n_ getting metadata..."
-_connection_id=$(run_fab_command "get .connections/conn_stfabdemos.Connection -q id" | tr -d '\r')
+_connection_id_blob=$(run_fab_command "get .connections/conn_stfabdemos_blob.Connection -q id" | tr -d '\r')
+_connection_id_adlsgen2=$(run_fab_command "get .connections/conn_stfabdemos_adlsgen2.Connection -q id" | tr -d '\r')
 _workspace_id=$(run_fab_command "get /${workspace_name}.Workspace -q id" | tr -d '\r')
 _lakehouse_id=$(run_fab_command "get /${workspace_name}.Workspace/${lakehouse_name}.Lakehouse -q id" | tr -d '\r')
 _lakehouse_conn_string=$(run_fab_command "get /${workspace_name}.Workspace/${lakehouse_name}.Lakehouse -q properties.sqlEndpointProperties.connectionString" | tr -d '\r')
 _lakehouse_conn_id=$(run_fab_command "get /${workspace_name}.Workspace/${lakehouse_name}.Lakehouse -q properties.sqlEndpointProperties.id" | tr -d '\r')
-echo " ___ > connection_id: $_connection_id"
+echo " ___ > connection_id_blob: $_connection_id_blob"
+echo " ___ > connection_id_adlsgen2: $_connection_id_adlsgen2"
 echo " ___ > workspace_id: $_workspace_id"
 echo "\___ > lakehouse_id: $_lakehouse_id"
 echo "\___ > lakehouse_conn_string: $_lakehouse_conn_string"
@@ -82,11 +89,11 @@ echo "* Done"
 # import items
 echo -e "\n_ importing items..."
 
-# # pipeline
+# pipeline
 echo -e "\n ___replacing pipeline metadata (rebind connection and lakehouse)..."
 jq --arg workspace_id "$_workspace_id" \
    --arg lakehouse_id "$_lakehouse_id" \
-   --arg connection_id "$_connection_id" \
+   --arg connection_id "$_connection_id_blob" \
    '.properties.activities[].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.workspaceId = $workspace_id |
     .properties.activities[].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.artifactId = $lakehouse_id |
     .properties.activities[].typeProperties.source.datasetSettings.externalReferences.connection = $connection_id' \
@@ -97,7 +104,7 @@ echo -e "\n___ importing a pipeline..."
 run_fab_command "import -f /${workspace_name}.Workspace/IngestDataFromSourceToLakehouse.DataPipeline -i ${staging_dir}/IngestDataFromSourceToLakehouse.DataPipeline"
 echo "* Done"
 
-notebook
+# notebook
 echo -e "\n___ importing a notebook..."
 run_fab_command "import -f /${workspace_name}.Workspace/01 - Create Delta Tables.Notebook -i ${staging_dir}/01 - Create Delta Tables.Notebook"
 echo "* Done"
@@ -118,9 +125,9 @@ echo "* Done"
 echo -e "\n___ replacing report metadata (rebind to semantic model)..."
 run_fab_command "set -f /${workspace_name}.Workspace/Profit Reporting.Report -q semanticModelId -i ${_semantic_model_id}"
 
-shortcut
+# shortcut
 echo -e "\n_ creating a shortcut to ADLS Gen2..."
-run_fab_command "ln /${workspace_name}.Workspace/${lakehouse_name}.Lakehouse/Files/wwi-raw-data.Shortcut --type adlsGen2 -i \"{\"location\": \"https://stfabdemos.dfs.core.windows.net/\", \"subpath\": \"fabdata/WideWorldImportersDW\", \"connectionId\": \"4fc37846-29c0-46b4-81db-2539f0559c04\"}\" -f"
+run_fab_command "ln /${workspace_name}.Workspace/${lakehouse_name}.Lakehouse/Files/wwi-raw-data.Shortcut --type adlsGen2 -i \"{\"location\": \"https://stfabdemos.dfs.core.windows.net/\", \"subpath\": \"fabdata/WideWorldImportersDW\", \"connectionId\": \"${_connection_id_adlsgen2}\"}\" -f"
 
 running jobs
 echo -e "\n_ running jobs..."
@@ -160,10 +167,3 @@ _semantic_model_id=$(run_fab_command "get /${workspace_name}.Workspace/wwilakeho
 echo -e "\n___ importing a report..."
 run_fab_command "import -f /${workspace_name}.Workspace/Profit Reporting.Report -i ${staging_dir}/Profit Reporting.Report"
 echo "* Done"
-
-
-# azcopy from github to lakehouse
-
-# load to table
-# echo -e "\n_ loading dimension_customer table..."
-# run_fab_command "table load /${workspace_name}.Workspace/${lakehouse_name}.Lakehouse/Tables/dimension_customer --file /${workspace_name}.Workspace/${lakehouse_name}.Lakehouse/Files/csv"
