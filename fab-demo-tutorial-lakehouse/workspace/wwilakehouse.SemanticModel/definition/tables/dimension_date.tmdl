@@ -1,0 +1,160 @@
+table dimension_date
+	lineageTag: f8c09b10-eacc-40e9-99e5-a70012242eea
+	sourceLineageTag: [dbo].[dimension_date]
+
+	column Date
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 4aa548e2-8baf-46d3-ac22-acd60e3580bb
+		sourceLineageTag: Date
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayNumber
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: daa98621-50bc-4098-bc2b-e14a7852f871
+		sourceLineageTag: DayNumber
+		summarizeBy: sum
+		sourceColumn: DayNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		dataType: string
+		sourceProviderType: varchar
+		lineageTag: 4f86f58f-4d62-4796-9308-9c03a2b87e2f
+		sourceLineageTag: Day
+		summarizeBy: none
+		sourceColumn: Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: string
+		sourceProviderType: varchar
+		lineageTag: a005ce7c-fd1c-45d2-8e0c-7c6ccf5b3ec3
+		sourceLineageTag: Month
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShortMonth
+		dataType: string
+		sourceProviderType: varchar
+		lineageTag: 321f7206-df2a-4d96-83fb-1c3bf2aa0e41
+		sourceLineageTag: ShortMonth
+		summarizeBy: none
+		sourceColumn: ShortMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column CalendarMonthNumber
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: cec14420-4ba3-4dd6-a141-f9b1937d5848
+		sourceLineageTag: CalendarMonthNumber
+		summarizeBy: sum
+		sourceColumn: CalendarMonthNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column CalendarMonthLabel
+		dataType: string
+		sourceProviderType: varchar
+		lineageTag: 7fa79aa2-1943-4c18-a59c-b3ef2a3c6919
+		sourceLineageTag: CalendarMonthLabel
+		summarizeBy: none
+		sourceColumn: CalendarMonthLabel
+
+		annotation SummarizationSetBy = Automatic
+
+	column CalendarYear
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: d0ebee90-d003-4f95-8e8f-a0a470c8049c
+		sourceLineageTag: CalendarYear
+		summarizeBy: sum
+		sourceColumn: CalendarYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column CalendarYearLabel
+		dataType: string
+		sourceProviderType: varchar
+		lineageTag: 92427b46-fdb7-4f8c-9508-046cf7853ac9
+		sourceLineageTag: CalendarYearLabel
+		summarizeBy: none
+		sourceColumn: CalendarYearLabel
+
+		annotation SummarizationSetBy = Automatic
+
+	column FiscalMonthNumber
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 9eb317bc-7a44-42e3-96f7-c77eb77e8efa
+		sourceLineageTag: FiscalMonthNumber
+		summarizeBy: sum
+		sourceColumn: FiscalMonthNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column FiscalMonthLabel
+		dataType: string
+		sourceProviderType: varchar
+		lineageTag: 16ada51c-9225-44af-98ac-c1392e62c6a7
+		sourceLineageTag: FiscalMonthLabel
+		summarizeBy: none
+		sourceColumn: FiscalMonthLabel
+
+		annotation SummarizationSetBy = Automatic
+
+	column FiscalYear
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: d996c28e-0c19-418a-9a7e-a4fa7e2f01d5
+		sourceLineageTag: FiscalYear
+		summarizeBy: sum
+		sourceColumn: FiscalYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column FiscalYearLabel
+		dataType: string
+		sourceProviderType: varchar
+		lineageTag: 4e786483-9ea9-4483-8858-7b5e83c8e34a
+		sourceLineageTag: FiscalYearLabel
+		summarizeBy: none
+		sourceColumn: FiscalYearLabel
+
+		annotation SummarizationSetBy = Automatic
+
+	column ISOWeekNumber
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 679d0aca-7365-44c1-b9d1-d1645923d018
+		sourceLineageTag: ISOWeekNumber
+		summarizeBy: sum
+		sourceColumn: ISOWeekNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dimension_date-f1afed4d-6330-4093-9ba3-fa0ec4130a7c = entity
+		mode: directLake
+		source
+			entityName: dimension_date
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation IsTableInBiModel = True
+

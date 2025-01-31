@@ -1,0 +1,81 @@
+{
+    "properties": {
+        "activities": [
+            {
+                "name": "Copy table",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "source": {
+                        "type": "ParquetSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        },
+                        "formatSettings": {
+                            "type": "ParquetReadSettings"
+                        },
+                        "datasetSettings": {
+                            "annotations": [],
+                            "type": "Parquet",
+                            "typeProperties": {
+                                "location": {
+                                    "type": "AzureBlobStorageLocation",
+                                    "folderPath": "WideWorldImportersDW/parquet/full/dimension_city",
+                                    "container": "fabdata"
+                                },
+                                "compressionCodec": "snappy"
+                            },
+                            "schema": [],
+                            "externalReferences": {
+                                "connection": "f9027543-afa0-4dcf-9bd0-50ecde8b3c44"
+                            }
+                        }
+                    },
+                    "sink": {
+                        "type": "LakehouseTableSink",
+                        "tableActionOption": "OverwriteSchema",
+                        "partitionOption": "None",
+                        "datasetSettings": {
+                            "annotations": [],
+                            "linkedService": {
+                                "name": "wwilakehouse",
+                                "properties": {
+                                    "annotations": [],
+                                    "type": "Lakehouse",
+                                    "typeProperties": {
+                                        "workspaceId": "f8c5694b-d95a-4861-8995-ef5208e07705",
+                                        "artifactId": "04e28bb3-be75-448d-91e4-aaaef3174d53",
+                                        "rootFolder": "Tables"
+                                    }
+                                }
+                            },
+                            "type": "LakehouseTable",
+                            "schema": [],
+                            "typeProperties": {
+                                "table": "dimension_city"
+                            }
+                        }
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                }
+            }
+        ]
+    }
+}

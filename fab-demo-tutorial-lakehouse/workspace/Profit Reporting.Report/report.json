@@ -1,0 +1,69 @@
+{
+    "config": "{\"version\":\"5.59\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY24SU10\",\"version\":\"5.61\",\"type\":2}},\"activeSectionIndex\":0,\"defaultDrillFilterOtherVisuals\":true,\"settings\":{\"useNewFilterPaneExperience\":true,\"allowChangeFilterTypes\":true,\"useStylableVisualContainerHeader\":true,\"queryLimitOption\":6,\"useEnhancedTooltips\":true,\"exportDataMode\":1,\"useDefaultAggregateDisplayName\":true},\"objects\":{\"section\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Top'\"}}}}}]}}",
+    "layoutOptimization": 0,
+    "resourcePackages": [
+        {
+            "resourcePackage": {
+                "disabled": false,
+                "items": [
+                    {
+                        "name": "CY24SU10",
+                        "path": "BaseThemes/CY24SU10.json",
+                        "type": 202
+                    }
+                ],
+                "name": "SharedResources",
+                "type": 2
+            }
+        }
+    ],
+    "sections": [
+        {
+            "config": "{}",
+            "displayName": "Page 1",
+            "displayOption": 1,
+            "filters": "[]",
+            "height": 720.0,
+            "name": "819031e7c4094a1e1109",
+            "visualContainers": [
+                {
+                    "config": "{\"name\":\"37aa02350b0cb780cb7e\",\"layouts\":[{\"id\":0,\"position\":{\"x\":514.3272727272728,\"y\":52.36363636363637,\"z\":2,\"width\":677.2363636363636,\"height\":259.4909090909091,\"tabOrder\":2}}],\"singleVisual\":{\"visualType\":\"stackedAreaChart\",\"projections\":{\"Y\":[{\"queryRef\":\"Sum(fact_sale.Profit)\"}],\"Series\":[{\"queryRef\":\"dimension_stock_item.BuyingPackage\"}],\"Category\":[{\"queryRef\":\"dimension_date.FiscalMonthNumber\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"fact_sale\",\"Type\":0},{\"Name\":\"d\",\"Entity\":\"dimension_stock_item\",\"Type\":0},{\"Name\":\"d1\",\"Entity\":\"dimension_date\",\"Type\":0}],\"Select\":[{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Profit\"}},\"Function\":0},\"Name\":\"Sum(fact_sale.Profit)\",\"NativeReferenceName\":\"Sum of Profit\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"BuyingPackage\"},\"Name\":\"dimension_stock_item.BuyingPackage\",\"NativeReferenceName\":\"BuyingPackage\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d1\"}},\"Property\":\"FiscalMonthNumber\"},\"Name\":\"dimension_date.FiscalMonthNumber\",\"NativeReferenceName\":\"FiscalMonthNumber\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Profit\"}},\"Function\":0}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+                    "filters": "[]",
+                    "height": 259.49,
+                    "width": 677.24,
+                    "x": 514.33,
+                    "y": 52.36,
+                    "z": 2.0
+                },
+                {
+                    "config": "{\"name\":\"886011191041caba044a\",\"layouts\":[{\"id\":0,\"position\":{\"x\":52.38249594813614,\"y\":312.22042139384126,\"z\":1,\"width\":452.25283630470017,\"height\":354.74878444084277,\"tabOrder\":1}}],\"singleVisual\":{\"visualType\":\"clusteredBarChart\",\"projections\":{\"Y\":[{\"queryRef\":\"Sum(fact_sale.Profit)\"}],\"Category\":[{\"queryRef\":\"dimension_city.SalesTerritory\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"fact_sale\",\"Type\":0},{\"Name\":\"d\",\"Entity\":\"dimension_city\",\"Type\":0}],\"Select\":[{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Profit\"}},\"Function\":0},\"Name\":\"Sum(fact_sale.Profit)\",\"NativeReferenceName\":\"Sum of Profit\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"SalesTerritory\"},\"Name\":\"dimension_city.SalesTerritory\",\"NativeReferenceName\":\"SalesTerritory\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Profit\"}},\"Function\":0}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+                    "filters": "[]",
+                    "height": 354.75,
+                    "width": 452.25,
+                    "x": 52.38,
+                    "y": 312.22,
+                    "z": 1.0
+                },
+                {
+                    "config": "{\"name\":\"b2e3b87eee3002765703\",\"layouts\":[{\"id\":0,\"position\":{\"x\":52.38249594813614,\"y\":51.86385737439219,\"z\":0,\"width\":452.25283630470017,\"height\":280.064829821718,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"Sum(fact_sale.Profit)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"fact_sale\",\"Type\":0}],\"Select\":[{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Profit\"}},\"Function\":0},\"Name\":\"Sum(fact_sale.Profit)\",\"NativeReferenceName\":\"Sum of Profit\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Profit\"}},\"Function\":0}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+                    "filters": "[]",
+                    "height": 280.06,
+                    "width": 452.25,
+                    "x": 52.38,
+                    "y": 51.86,
+                    "z": 0.0
+                },
+                {
+                    "config": "{\"name\":\"eb5e250f648cb1ca90b2\",\"layouts\":[{\"id\":0,\"position\":{\"x\":514.3272727272728,\"y\":311.8545454545455,\"z\":3,\"width\":677.2363636363636,\"height\":354.90909090909093,\"tabOrder\":3}}],\"singleVisual\":{\"visualType\":\"columnChart\",\"projections\":{\"Y\":[{\"queryRef\":\"Sum(fact_sale.Profit)\"}],\"Category\":[{\"queryRef\":\"dimension_employee.Employee\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"fact_sale\",\"Type\":0},{\"Name\":\"d\",\"Entity\":\"dimension_employee\",\"Type\":0}],\"Select\":[{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Profit\"}},\"Function\":0},\"Name\":\"Sum(fact_sale.Profit)\",\"NativeReferenceName\":\"Sum of Profit\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Employee\"},\"Name\":\"dimension_employee.Employee\",\"NativeReferenceName\":\"Employee\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Profit\"}},\"Function\":0}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+                    "filters": "[]",
+                    "height": 354.91,
+                    "width": 677.24,
+                    "x": 514.33,
+                    "y": 311.85,
+                    "z": 3.0
+                }
+            ],
+            "width": 1280.0
+        }
+    ]
+}

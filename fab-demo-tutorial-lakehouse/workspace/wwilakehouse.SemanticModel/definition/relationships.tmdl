@@ -1,0 +1,32 @@
+relationship 91fce00e-0e3a-8762-beb9-43d61184f3f8
+	relyOnReferentialIntegrity
+	fromColumn: fact_sale.CityKey
+	toColumn: dimension_city.CityKey
+
+	annotation __RelationshipProperties = {"constraintName":"","needRecreation":false,"isUserCreated":true}
+
+relationship a0d237cb-b966-ec5d-b12f-576db1563078
+	fromColumn: fact_sale.StockItemKey
+	toColumn: dimension_stock_item.StockItemKey
+
+	annotation __RelationshipProperties = {"constraintName":"","needRecreation":false,"isUserCreated":true}
+
+relationship 546ec952-e066-66f7-3d25-d6cb8968d339
+	relyOnReferentialIntegrity
+	fromColumn: fact_sale.SalespersonKey
+	toColumn: dimension_employee.EmployeeKey
+
+	annotation __RelationshipProperties = {"constraintName":"","needRecreation":false,"isUserCreated":true}
+
+relationship 86761bd8-23e0-5443-6c6c-f11c525b115b
+	fromColumn: dimension_customer.CustomerKey
+	toColumn: fact_sale.CustomerKey
+
+	annotation __RelationshipProperties = {"constraintName":"","needRecreation":false,"isUserCreated":true}
+
+relationship 0492f194-c551-a43c-7fa5-38773e02e3a0
+	fromColumn: fact_sale.InvoiceDateKey
+	toColumn: dimension_date.Date
+
+	annotation __RelationshipProperties = {"constraintName":"","needRecreation":false,"isUserCreated":true}
+

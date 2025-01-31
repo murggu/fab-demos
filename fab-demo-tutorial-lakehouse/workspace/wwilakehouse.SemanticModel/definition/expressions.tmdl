@@ -1,0 +1,12 @@
+expression DatabaseQuery = 
+		let
+		    database = Sql.Database(Server, Database)
+		in
+		    database
+
+	
+expression Server = "XUO7C7SW7ONUHHLEI7JMT7CN3E-5NMTCG4VCUAELMP2UGNFR7CLCI.datawarehouse.fabric.microsoft.com" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 39c7bef4-452b-4b29-846c-f788ef1af01f
+
+expression Database = "5ec27d10-f4e8-402c-8707-6c54fe94ef5c" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: a7c64317-d746-4e5a-813d-43bbf0439e23
