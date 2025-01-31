@@ -35,4 +35,4 @@ jobs:
           FAB_TENANT_ID: ${{ secrets.FAB_TENANT_ID }}
         run: |
           fab -c "config set fab_encryption_fallback_enabled true"
-          fab -c "ls"
+          fab-demo-tutorial-lakehouse/scripts/setup.sh
