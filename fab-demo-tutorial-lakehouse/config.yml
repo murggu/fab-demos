@@ -2,12 +2,12 @@ variables:
   # Global
   demo_name: "fab-demo-tutorial-lakehouse"
   capacity_name: "Trial-20240216T095351Z-aiYznZSl4kS24GSzM6Yejw"
-  workspace_name: "_ws_fab_tutorial_lakehouse_spn1"
+  workspace_name: "_ws_fab_tutorial_lakehouse_upn2"
   domain_name: "tutorials"
   lakehouse_name: "wwilakehouse"
 
   # SPN auth
-  enable_spn_auth: "true"
+  enable_spn_auth: "false"
   upn_objectid: "395d4722-e034-4fe5-a95c-525d5b0adeeb"
 
   # Internals - do not touch
