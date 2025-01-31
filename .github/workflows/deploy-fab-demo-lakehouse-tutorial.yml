@@ -21,18 +21,18 @@ jobs:
           python -m pip install dist/fabric_cli-0.1.5-py3-none-any.whl
       - name: Set environment variables
         env:
-          FAB_TOKEN: ${{ secrets.FABRIC_TOKEN }}
-          FAB_TOKEN_ONELAKE: ${{ secrets.FABRIC_TOKEN_ONELAKE }}
-          FAB_TOKEN_AZURE: ${{ secrets.FABRIC_TOKEN_AZURE }}
-          FAB_TENANT_ID: ${{ secrets.FABRIC_TENANT_ID }}
+          FAB_TOKEN: ${{ secrets.FAB_TOKEN }}
+          FAB_TOKEN_ONELAKE: ${{ secrets.FAB_TOKEN_ONELAKE }}
+          FAB_TOKEN_AZURE: ${{ secrets.FAB_TOKEN_AZURE }}
+          FAB_TENANT_ID: ${{ secrets.FAB_TENANT_ID }}
         run: |
           echo "Environment variables set."
       - name: Run Fabric CLI commands
         env:
-          FAB_TOKEN: ${{ secrets.FABRIC_TOKEN }}
-          FAB_TOKEN_ONELAKE: ${{ secrets.FABRIC_TOKEN_ONELAKE }}
-          FAB_TOKEN_AZURE: ${{ secrets.FABRIC_TOKEN_AZURE }}
-          FAB_TENANT_ID: ${{ secrets.FABRIC_TENANT_ID }}
+          FAB_TOKEN: ${{ secrets.FAB_TOKEN }}
+          FAB_TOKEN_ONELAKE: ${{ secrets.FAB_TOKEN_ONELAKE }}
+          FAB_TOKEN_AZURE: ${{ secrets.FAB_TOKEN_AZURE }}
+          FAB_TENANT_ID: ${{ secrets.FAB_TENANT_ID }}
         run: |
           fab -c "config set fab_encryption_fallback_enabled true"
           fab -c "ls"
