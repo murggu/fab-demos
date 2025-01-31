@@ -34,4 +34,5 @@ jobs:
           FAB_TOKEN_AZURE: ${{ secrets.FABRIC_TOKEN_AZURE }}
           FAB_TENANT_ID: ${{ secrets.FABRIC_TENANT_ID }}
         run: |
+          fab -c "config set fab_encryption_fallback_enabled true"
           fab -c "ls"
