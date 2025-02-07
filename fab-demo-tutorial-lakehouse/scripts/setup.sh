@@ -1,44 +1,10 @@
 #!/bin/bash
 
-CONFIG_FILE="$(dirname "$0")/../config.yml"
-
-# functions
-
-read_config() {
-    if [[ ! -f "$CONFIG_FILE" ]]; then
-        echo "Error: Config file not found at $CONFIG_FILE"
-        exit 1
-    fi
-
-    while IFS=": " read -r key value; do
-        # Remove any \r characters and extra spaces
-        key=$(echo "$key" | tr -d '\r' | xargs)
-        value=$(echo "$value" | tr -d '\r' | tr -d '"' | xargs)
-
-        # Skip empty lines and comments
-        if [[ ! "$key" =~ ^# && -n "$key" ]]; then
-            export "$key"="$value"
-        fi
-    done < "$CONFIG_FILE"
-}
-
-run_fab_command() {
-  local command=$1
-
-  fab -c "${command}"
-}
-
-create_staging(){
-    echo -e "\n_ creating staging directory..."
-    mkdir -p "$staging_dir"
-    cp -r ./${demo_name}/workspace/* $staging_dir/
-    echo "* Done"
-}
-
 if [ "$enable_spn_auth" == "true" ]; then
     run_fab_command "auth login -u 896ce0db-0a7b-441e-a2b3-63de272f9839 -p Hcp8Q~azggAebMLEU.A.Vfjf-HqmUCOyBLEixbv8 --tenant 7ef11dbd-fb56-439b-9d64-47d2c9fc4dd9"
 fi
 
+source ./common/scripts/utils.sh
 read_config
 create_staging
 
@@ -50,32 +16,26 @@ _stg_report_json="$staging_dir/Profit Reporting.Report/definition.pbir"
 # create a domain
 echo -e "\n_ creating a domain..."
 run_fab_command "create /.domains/${domain_name}.Domain"
-echo "* Done"
 
 # create a workspace
 echo -e "\n_ creating a workspace..."
 run_fab_command "create /${workspace_name}.Workspace -P capacityName=${capacity_name}"
-echo "* Done"
 
 if [ "$enable_spn_auth" == "true" ]; then
     echo -e "\n_ assigning permissions to workspace..."
     run_fab_command "acl set -f /${workspace_name}.Workspace -I $upn_objectid -R admin"
-    echo "* Done"
 fi
 
 # create a lakehouse
 echo -e "\n_ creating a lakehouse..."
 run_fab_command "create /${workspace_name}.Workspace/${lakehouse_name}.Lakehouse"
-echo "* Done"
 
 # create a connection
 echo -e "\n_ creating a connection..."
 run_fab_command "create .connections/conn_stfabdemos_blob_${workspace_name}.Connection -P .connections/example001.Connection -P connectionDetails.type=AzureBlobs,connectionDetails.parameters.account=stfabdemos,connectionDetails.parameters.domain=blob.core.windows.net/fabdata,credentialDetails.type=Anonymous"
-echo "* Done"
 
 echo -e "\n_ creating a ADLS Gen2 connection..."
 run_fab_command "create .connections/conn_stfabdemos_adlsgen2_${workspace_name}.connection -P connectionDetails.type=AzureDataLakeStorage,connectionDetails.parameters.server=stfabdemos.dfs.core.windows.net,connectionDetails.parameters.path=fabdata,credentialDetails.type=SharedAccessSignature,credentialDetails.Token=$_sas_token"
-echo "* Done"
 
 echo -e "\n_ getting metadata..."
 _connection_id_blob=$(run_fab_command "get .connections/conn_stfabdemos_blob_${workspace_name}.Connection -q id" | tr -d '\r')
@@ -90,7 +50,6 @@ echo " ___ > workspace_id: $_workspace_id"
 echo "\___ > lakehouse_id: $_lakehouse_id"
 echo "\___ > lakehouse_conn_string: $_lakehouse_conn_string"
 echo " ___ > lakehouse_conn_id: $_lakehouse_conn_id"
-echo "* Done"
 
 # import items
 echo -e "\n_ importing items..."
@@ -108,25 +67,20 @@ echo "* Done"
 
 echo -e "\n___ importing a pipeline..."
 run_fab_command "import -f /${workspace_name}.Workspace/IngestDataFromSourceToLakehouse.DataPipeline -i ${staging_dir}/IngestDataFromSourceToLakehouse.DataPipeline"
-echo "* Done"
 
 # notebook
 echo -e "\n___ importing a notebook..."
 run_fab_command "import -f /${workspace_name}.Workspace/01 - Create Delta Tables.Notebook -i ${staging_dir}/01 - Create Delta Tables.Notebook"
-echo "* Done"
 
 echo -e "\n___ replacing notebook metadata (rebind to lakehouse)..."
 run_fab_command "set -f /${workspace_name}.Workspace/01 - Create Delta Tables.Notebook -q lakehouse -i '{\"known_lakehouses\": [{\"id\": \"${_lakehouse_id}\"}],\"default_lakehouse\": \"${_lakehouse_id}\",\"default_lakehouse_name\": \"${lakehouse_name}\",\"default_lakehouse_workspace_id\": \"${_workspace_id}\"}'"
-echo "* Done"
 
 # notebook
 echo -e "\n___ importing a notebook..."
 run_fab_command "import -f /${workspace_name}.Workspace/02 - Data Transformation - Business Aggregates.Notebook -i ${staging_dir}/02 - Data Transformation - Business Aggregates.Notebook"
-echo "* Done"
 
 echo -e "\n___ replacing notebook metadata (rebind to lakehouse)..."
 run_fab_command "set -f /${workspace_name}.Workspace/02 - Data Transformation - Business Aggregates.Notebook -q lakehouse -i '{\"known_lakehouses\": [{\"id\": \"${_lakehouse_id}\"}],\"default_lakehouse\": \"${_lakehouse_id}\",\"default_lakehouse_name\": \"${lakehouse_name}\",\"default_lakehouse_workspace_id\": \"${_workspace_id}\"}'"
-echo "* Done"
 
 # shortcut
 echo -e "\n_ creating a shortcut to ADLS Gen2..."
@@ -137,15 +91,12 @@ echo -e "\n_ running jobs..."
 
 echo -e "\n___ running pipeline..."
 run_fab_command "job run /${workspace_name}.Workspace/IngestDataFromSourceToLakehouse.DataPipeline"
-echo "* Done"
 
 echo -e "\n___ running notebook..."
 run_fab_command "job run /${workspace_name}.Workspace/01 - Create Delta Tables.Notebook"
-echo "* Done"
 
 echo -e "\n___ running notebook..."
 run_fab_command "job run /${workspace_name}.Workspace/02 - Data Transformation - Business Aggregates.Notebook"
-echo "* Done"
 
 # semantic model
 echo -e "\n_ replacing semantic model metadata (data sources)..."
