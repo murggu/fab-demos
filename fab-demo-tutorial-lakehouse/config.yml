@@ -1,8 +1,8 @@
 variables:
   # Global
   demo_name: "fab-demo-tutorial-lakehouse"
-  capacity_name: "Trial-20240216T095351Z-aiYznZSl4kS24GSzM6Yejw"
-  workspace_name: "_ws_fab_tutorial_lakehouse_02"
+  capacity_name: "cosmosdbmirroring"
+  workspace_name: "_ws_fab_tutorial_lakehouse_03"
   domain_name: "tutorials"
   lakehouse_name: "wwilakehouse"
 
