@@ -1,0 +1,15 @@
+// KQL script
+// Use management commands in this script to configure your database items, such as tables, functions, materialized views, and more.
+
+
+.create-merge table RawData (BikepointID:string, Street:string, Neighbourhood:string, Latitude:dynamic, Longitude:dynamic, No_Bikes:long, No_Empty_Docks:long, Timestamp:datetime) with (folder = "Bronze") 
+.create-merge table TransformedData (BikepointID:int, Street:string, Neighbourhood:string, Latitude:dynamic, Longitude:dynamic, No_Bikes:long, No_Empty_Docks:long, Timestamp:datetime, BikesToBeFilled:long, Action:string) with (folder = "Silver") 
+.create-or-alter function with (skipvalidation = "true") TransformRawData() {
+RawData
+| parse BikepointID with * "BikePoints_" BikepointID:int
+| extend BikesToBeFilled = No_Empty_Docks - No_Bikes
+| extend Action = iff(BikesToBeFilled > 0, tostring(BikesToBeFilled), "NA")
+ }
+.create-or-alter materialized-view with (Folder = "Gold")  AggregatedData on table TransformedData { TransformedData
+   | summarize arg_max(Timestamp,No_Bikes) by BikepointID }
+.alter table TransformedData policy update "[{\"IsEnabled\":true,\"Source\":\"RawData\",\"Query\":\"TransformRawData()\",\"IsTransactional\":false,\"PropagateIngestionProperties\":false,\"ManagedIdentity\":null}]"

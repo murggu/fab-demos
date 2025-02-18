@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "KQLDashboard",
+    "displayName": "TutorialDashboard",
+    "description": "TutorialDashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "11ed557a-e003-9b7e-4818-53e10d80e9d3"
+  }
+}

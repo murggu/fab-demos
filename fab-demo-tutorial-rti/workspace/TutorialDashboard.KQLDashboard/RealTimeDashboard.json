@@ -1,0 +1,187 @@
+{
+    "schema_version": "58",
+    "title": "DEFAULTED_TITLE",
+    "tiles": [
+        {
+            "id": "dc28e2a5-da2d-43ae-82f6-ce50e8a767fb",
+            "title": "Recent bikes by Bikepoint ID",
+            "visualType": "column",
+            "pageId": "825cb73b-2061-4e5e-9fe9-279ea7cce85d",
+            "layout": {
+                "x": 0,
+                "y": 0,
+                "width": 9,
+                "height": 7
+            },
+            "queryRef": {
+                "kind": "query",
+                "queryId": "3c9d5a85-f2dc-4b96-8f91-a048109ee0c2"
+            },
+            "visualOptions": {
+                "xColumn": "BikepointID",
+                "multipleYAxes": {
+                    "additional": [],
+                    "showMultiplePanels": false,
+                    "base": {
+                        "horizontalLines": [],
+                        "yAxisScale": "linear",
+                        "yAxisMaximumValue": null,
+                        "yAxisMinimumValue": null,
+                        "columns": [],
+                        "label": "",
+                        "id": "-1"
+                    }
+                },
+                "yColumns": [
+                    "No_Bikes"
+                ],
+                "seriesColumns": null,
+                "anomalyColumns": null
+            }
+        },
+        {
+            "id": "82229313-6952-4673-9c1f-1ef7329d3efd",
+            "title": "Chelsea bikes",
+            "visualType": "table",
+            "pageId": "825cb73b-2061-4e5e-9fe9-279ea7cce85d",
+            "layout": {
+                "x": 14,
+                "y": 0,
+                "width": 9,
+                "height": 7
+            },
+            "queryRef": {
+                "kind": "query",
+                "queryId": "3070dfef-4bdd-4aa4-9ce9-4de2f3b2759f"
+            },
+            "visualOptions": {
+                "table__enableRenderLinks": true,
+                "colorRulesDisabled": true,
+                "colorStyle": "light",
+                "crossFilter": [],
+                "crossFilterDisabled": false,
+                "drillthroughDisabled": false,
+                "drillthrough": [],
+                "table__renderLinks": [],
+                "colorRules": []
+            }
+        },
+        {
+            "id": "11ddad8d-cf72-4a81-a797-022e7e9b0397",
+            "title": "Max no. of bikes at each street",
+            "visualType": "bar",
+            "pageId": "825cb73b-2061-4e5e-9fe9-279ea7cce85d",
+            "layout": {
+                "x": 9,
+                "y": 0,
+                "width": 5,
+                "height": 7
+            },
+            "queryRef": {
+                "kind": "query",
+                "queryId": "449bb70d-cf27-4b66-bdf0-851498857629"
+            },
+            "visualOptions": {}
+        },
+        {
+            "id": "6efdc68e-0a4d-4a93-b032-62c64889dbe3",
+            "title": "Bike locations Map",
+            "visualType": "map",
+            "pageId": "825cb73b-2061-4e5e-9fe9-279ea7cce85d",
+            "layout": {
+                "x": 0,
+                "y": 7,
+                "width": 23,
+                "height": 12
+            },
+            "queryRef": {
+                "kind": "query",
+                "queryId": "ef96c2a5-e15f-4e2d-b6a1-3271915c32f5"
+            },
+            "visualOptions": {
+                "map__type": "bubble",
+                "map__latitudeColumn": "Latitude",
+                "map__longitudeColumn": "Longitude",
+                "map__labelColumn": null,
+                "map__sizeColumn": null,
+                "map__sizeDisabled": true,
+                "map__geoType": "numeric",
+                "map__geoPointColumn": null
+            }
+        }
+    ],
+    "baseQueries": [],
+    "parameters": [
+        {
+            "kind": "duration",
+            "id": "ba387d5d-4769-4bf8-bf8b-e49aca30155f",
+            "displayName": "Time range",
+            "description": "",
+            "beginVariableName": "_startTime",
+            "endVariableName": "_endTime",
+            "defaultValue": {
+                "kind": "dynamic",
+                "count": 1,
+                "unit": "hours"
+            },
+            "showOnPages": {
+                "kind": "all"
+            }
+        }
+    ],
+    "dataSources": [
+        {
+            "id": "35804c2f-df49-4540-9a53-96ac6a5d0b67",
+            "kind": "kusto-trident",
+            "scopeId": "kusto-trident",
+            "clusterUri": "",
+            "database": "88a7ebfd-4b71-b41d-41ea-8bc0286d907e",
+            "name": "Tutorial",
+            "workspace": "00000000-0000-0000-0000-000000000000"
+        }
+    ],
+    "pages": [
+        {
+            "name": "Page 1",
+            "id": "825cb73b-2061-4e5e-9fe9-279ea7cce85d"
+        }
+    ],
+    "queries": [
+        {
+            "dataSource": {
+                "kind": "inline",
+                "dataSourceId": "35804c2f-df49-4540-9a53-96ac6a5d0b67"
+            },
+            "text": "AggregatedData\n| sort by BikepointID\n| render columnchart with (ycolumns=No_Bikes,xcolumn=BikepointID)",
+            "id": "3c9d5a85-f2dc-4b96-8f91-a048109ee0c2",
+            "usedVariables": []
+        },
+        {
+            "dataSource": {
+                "kind": "inline",
+                "dataSourceId": "35804c2f-df49-4540-9a53-96ac6a5d0b67"
+            },
+            "text": "RawData\n| where Neighbourhood == \"Chelsea\"",
+            "id": "3070dfef-4bdd-4aa4-9ce9-4de2f3b2759f",
+            "usedVariables": []
+        },
+        {
+            "dataSource": {
+                "kind": "inline",
+                "dataSourceId": "35804c2f-df49-4540-9a53-96ac6a5d0b67"
+            },
+            "text": "RawData\n| where Neighbourhood == \"Chelsea\"\n| summarize Max_Bikes=max(No_Bikes) by Street=Street",
+            "id": "449bb70d-cf27-4b66-bdf0-851498857629",
+            "usedVariables": []
+        },
+        {
+            "dataSource": {
+                "kind": "inline",
+                "dataSourceId": "35804c2f-df49-4540-9a53-96ac6a5d0b67"
+            },
+            "text": "RawData\n| where Timestamp > ago(1h)",
+            "id": "ef96c2a5-e15f-4e2d-b6a1-3271915c32f5",
+            "usedVariables": []
+        }
+    ]
+}
