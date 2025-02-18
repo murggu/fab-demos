@@ -1,0 +1,13 @@
+variables:
+  # Global
+  demo_name: "fab-demo-fuam"
+  capacity_name: "Trial-20240216T095351Z-aiYznZSl4kS24GSzM6Yejw"
+  workspace_name: "_ws_fab_demo_fuam"
+  lakehouse_name: "FUAM_Config_Lakehouse"
+
+  # SPN auth
+  enable_spn_auth: "false"
+  upn_objectid: "395d4722-e034-4fe5-a95c-525d5b0adeeb"
+
+  # Internals - do not touch
+  staging_dir: "./tmp"

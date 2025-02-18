@@ -27,9 +27,12 @@ run_fab_command() {
   fab -c "${command}"
 }
 
-create_staging(){
+create_staging()  {
     echo -e "\n_ creating staging directory..."
     mkdir -p "$staging_dir"
     cp -r ./${demo_name}/workspace/* $staging_dir/
     echo "* Done"
 }
+
+# fab specific
+# TODO
