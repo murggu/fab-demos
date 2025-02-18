@@ -7,8 +7,7 @@ source ./common/scripts/utils.sh
 read_config
 check_spn_auth
 
-
-run_demo(){
+run_demo() {
     local postfix=$1
 
     create_staging
