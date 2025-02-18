@@ -2,7 +2,6 @@ variables:
   # Global
   capacity_name: "Trial-20240216T095351Z-aiYznZSl4kS24GSzM6Yejw"
   workspace_name: "_ws_fab_tutorial_lakehouse_001"
-  domain_name: "tutorials"
 
   # SPN auth
   enable_spn_auth: "false"

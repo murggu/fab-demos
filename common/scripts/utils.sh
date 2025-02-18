@@ -84,6 +84,49 @@ replace_kqldashboard_datasource() {
     "$_stg_json" > "$_stg_json.tmp" && mv "$_stg_json.tmp" "$_stg_json"
 }
 
+replace_bypath_to_byconnection() {
+    local report_name=$1
+    local semantic_model_id=$2
+    local _stg_report_json="$staging_dir/$report_name/definition.pbir"
+
+    jq --arg _semantic_model_id "$semantic_model_id" \
+        '.datasetReference.byPath = null | .datasetReference.byConnection = {
+        "connectionString": "Data Source=powerbi://api.powerbi.com/v1.0/myorg/mkdir;Initial Catalog=r3;Integrated Security=ClaimsToken",
+        "pbiServiceModelId": null,
+        "pbiModelVirtualServerName": "sobe_wowvirtualserver",
+        "pbiModelDatabaseName": $_semantic_model_id,
+        "name": "EntityDataSource",
+        "connectionType": "pbiServiceXmlaStyleLive"
+    }' "$_stg_report_json" > "$_stg_report_json.tmp" && mv "$_stg_report_json.tmp" "$_stg_report_json"
+}
+
+replace_kqlqueryset_connection() {
+    local kql_qs_name=$1
+    local kql_db_id=$2
+    local cluster_uri=$3
+    local _stg_json="$staging_dir/$kql_qs_name/RealTimeQueryset.json"
+
+    jq --arg _kql_db_id "$kql_db_id" \
+    --arg _cluster_uri "$cluster_uri" \
+    '(.payload.connections["1866773671"].connectionString = $_cluster_uri |
+        .payload.connections["1866773671"].initialCatalog = $_kql_db_id) |
+    walk(if type == "string" then gsub("88a7ebfd-4b71-b41d-41ea-8bc0286d907e"; $_kql_db_id) else . end)' \
+    "$_stg_json" > "$_stg_json.tmp" && mv "$_stg_json.tmp" "$_stg_json"
+}
+
+replace_string_value_on_table() {
+    local semmodel_name=$1
+    local table_name=$2
+    local old_string=$3
+    local new_string=$4
+    local _stg_semmodel_tmdl="$staging_dir/$semmodel_name/definition/tables/$table_name.tmdl"
+
+    if [[ -f "$_stg_semmodel_tmdl" ]]; then
+        sed -i "s|$old_string|$new_string|g" "$_stg_semmodel_tmdl"
+    fi
+}
+
+
 # fab specific
 
 create_workspace(){

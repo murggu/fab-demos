@@ -14,37 +14,23 @@ run_demo(){
     create_staging
     create_workspace $postfix
 
-    create_staging
-
-    lakehouse_name="wwilakehouse"
+    _workspace_name="${workspace_name}_${postfix}.Workspace"
+    _lakehouse_name="wwilakehouse"
     _stg_tmdl_expressions="$staging_dir/wwilakehouse.SemanticModel/definition/expressions.tmdl"
     _stg_pip_json="$staging_dir/IngestDataFromSourceToLakehouse.DataPipeline/pipeline-content.json"
     _sas_token="sv=2022-11-02&ss=b&srt=co&sp=rlx&se=2026-12-31T18:59:36Z&st=2025-01-31T10:59:36Z&spr=https&sig=aL%2FIOiwz2AEj1fL9tRxH%2B4z%2FyfBl8qJ3KXinfPlaSEM%3D"
     _stg_report_json="$staging_dir/Profit Reporting.Report/definition.pbir"
 
-    # create a domain
-    echo -e "\n_ creating a domain..."
-    run_fab_command "create /.domains/${domain_name}.Domain"
-
-    # create a workspace
-    echo -e "\n_ creating a workspace..."
-    run_fab_command "create /${workspace_name}.Workspace -P capacityName=${capacity_name}"
-
-    if [ "$enable_spn_auth" == "true" ]; then
-        echo -e "\n_ assigning permissions to workspace..."
-        run_fab_command "acl set -f /${workspace_name}.Workspace -I $upn_objectid -R admin"
-    fi
-
-    # create a lakehouse
+    # create lakehouse
     echo -e "\n_ creating a lakehouse..."
-    run_fab_command "create /${workspace_name}.Workspace/${lakehouse_name}.Lakehouse"
+    run_fab_command "create /${_workspace_name}/${_lakehouse_name}.Lakehouse"
 
-    # create a connection
+    # create connections
     echo -e "\n_ creating a connection..."
-    run_fab_command "create .connections/conn_stfabdemos_blob_${workspace_name}.Connection -P .connections/example001.Connection -P connectionDetails.type=AzureBlobs,connectionDetails.parameters.account=stfabdemos,connectionDetails.parameters.domain=blob.core.windows.net/fabdata,credentialDetails.type=Anonymous"
+    run_fab_command "create .connections/conn_stfabdemos_blob_${_workspace_name}.Connection -P .connections/example001.Connection -P connectionDetails.type=AzureBlobs,connectionDetails.parameters.account=stfabdemos,connectionDetails.parameters.domain=blob.core.windows.net/fabdata,credentialDetails.type=Anonymous"
 
     echo -e "\n_ creating a ADLS Gen2 connection..."
-    run_fab_command "create .connections/conn_stfabdemos_adlsgen2_${workspace_name}.connection -P connectionDetails.type=AzureDataLakeStorage,connectionDetails.parameters.server=stfabdemos.dfs.core.windows.net,connectionDetails.parameters.path=fabdata,credentialDetails.type=SharedAccessSignature,credentialDetails.Token=$_sas_token"
+    run_fab_command "create .connections/conn_stfabdemos_adlsgen2_${_workspace_name}.connection -P connectionDetails.type=AzureDataLakeStorage,connectionDetails.parameters.server=stfabdemos.dfs.core.windows.net,connectionDetails.parameters.path=fabdata,credentialDetails.type=SharedAccessSignature,credentialDetails.Token=$_sas_token"
 
     echo -e "\n_ getting metadata..."
     _connection_id_blob=$(run_fab_command "get .connections/conn_stfabdemos_blob_${workspace_name}.Connection -q id" | tr -d '\r')
@@ -60,8 +46,8 @@ run_demo(){
     echo "\___ > lakehouse_conn_string: $_lakehouse_conn_string"
     echo " ___ > lakehouse_conn_id: $_lakehouse_conn_id"
 
-    # import items
-    echo -e "\n_ importing items..."
+    # deploying items
+    echo -e "\n_ deploying items..."
 
     # pipeline
     echo -e "\n ___replacing pipeline metadata (rebind connection and lakehouse)..."

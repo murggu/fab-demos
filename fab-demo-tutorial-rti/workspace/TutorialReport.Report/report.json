@@ -1,0 +1,42 @@
+{
+    "config": "{\"version\":\"5.59\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY24SU10\",\"version\":\"5.61\",\"type\":2}},\"activeSectionIndex\":0,\"defaultDrillFilterOtherVisuals\":true,\"linguisticSchemaSyncVersion\":0,\"settings\":{\"useNewFilterPaneExperience\":true,\"allowChangeFilterTypes\":true,\"useStylableVisualContainerHeader\":true,\"queryLimitOption\":6,\"useEnhancedTooltips\":true,\"exportDataMode\":1,\"useDefaultAggregateDisplayName\":true},\"objects\":{\"section\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Top'\"}}}}}]}}",
+    "layoutOptimization": 0,
+    "resourcePackages": [
+        {
+            "resourcePackage": {
+                "disabled": false,
+                "items": [
+                    {
+                        "name": "CY24SU10",
+                        "path": "BaseThemes/CY24SU10.json",
+                        "type": 202
+                    }
+                ],
+                "name": "SharedResources",
+                "type": 2
+            }
+        }
+    ],
+    "sections": [
+        {
+            "config": "{}",
+            "displayName": "Page 1",
+            "displayOption": 1,
+            "filters": "[]",
+            "height": 720.0,
+            "name": "d77f7645314da456fca5",
+            "visualContainers": [
+                {
+                    "config": "{\"name\":\"dfa6d834acbd35816e4f\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":0,\"z\":0,\"width\":1280,\"height\":719.91462113127,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"columnChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Kusto Query Result.Neighbourhood\",\"active\":true}],\"Y\":[{\"queryRef\":\"Sum(Kusto Query Result.No_Bikes)\"},{\"queryRef\":\"Sum(Kusto Query Result.No_Empty_Docks)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"k\",\"Entity\":\"Kusto Query Result\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"k\"}},\"Property\":\"Neighbourhood\"},\"Name\":\"Kusto Query Result.Neighbourhood\",\"NativeReferenceName\":\"Neighbourhood\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"k\"}},\"Property\":\"No_Bikes\"}},\"Function\":0},\"Name\":\"Sum(Kusto Query Result.No_Bikes)\",\"NativeReferenceName\":\"Sum of No_Bikes\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"k\"}},\"Property\":\"No_Empty_Docks\"}},\"Function\":0},\"Name\":\"Sum(Kusto Query Result.No_Empty_Docks)\",\"NativeReferenceName\":\"Sum of No_Empty_Docks\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"k\"}},\"Property\":\"No_Bikes\"}},\"Function\":0}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+                    "filters": "[]",
+                    "height": 719.91,
+                    "width": 1280.0,
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                }
+            ],
+            "width": 1280.0
+        }
+    ]
+}
