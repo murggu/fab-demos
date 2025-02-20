@@ -1,0 +1,55 @@
+table nation
+	lineageTag: fe2b6fdd-3f5b-4747-94fe-8c1119194c14
+	sourceLineageTag: [dbo].[nation]
+
+	column n_nationkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 9a02a30d-dd9d-440a-9fbb-039f47c6bd53
+		sourceLineageTag: n_nationkey
+		summarizeBy: sum
+		sourceColumn: n_nationkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_name
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 7eb66a46-911c-42eb-9273-b144e6cbd855
+		sourceLineageTag: n_name
+		summarizeBy: none
+		sourceColumn: n_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_regionkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: d958bc9d-0567-4298-8838-0461af4cba67
+		sourceLineageTag: n_regionkey
+		summarizeBy: sum
+		sourceColumn: n_regionkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column n_comment
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2b304357-3e29-4ffd-b5e6-ec18b274d34c
+		sourceLineageTag: n_comment
+		summarizeBy: none
+		sourceColumn: n_comment
+
+		annotation SummarizationSetBy = Automatic
+
+	partition nation = entity
+		mode: directLake
+		source
+			entityName: nation
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

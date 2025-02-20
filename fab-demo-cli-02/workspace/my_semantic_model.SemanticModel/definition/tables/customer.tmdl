@@ -1,0 +1,97 @@
+table customer
+	lineageTag: 058dd705-c8d6-4a85-a7e7-a709dd48f79c
+	sourceLineageTag: [dbo].[customer]
+
+	column c_custkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 5b478699-385f-4e21-b5b7-09c0003b6394
+		sourceLineageTag: c_custkey
+		summarizeBy: sum
+		sourceColumn: c_custkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column c_name
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2d0f9f82-3ca7-47d8-b741-ae45ac7c5b86
+		sourceLineageTag: c_name
+		summarizeBy: none
+		sourceColumn: c_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column c_address
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: b3a4a601-1b4f-4d96-90b0-4cb36c405498
+		sourceLineageTag: c_address
+		summarizeBy: none
+		sourceColumn: c_address
+
+		annotation SummarizationSetBy = Automatic
+
+	column c_nationkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 0fdd8663-a5fd-447c-9a0d-e68781f4b5f1
+		sourceLineageTag: c_nationkey
+		summarizeBy: sum
+		sourceColumn: c_nationkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column c_phone
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 36fd4053-5448-4a02-b4cb-6df6149d1ce9
+		sourceLineageTag: c_phone
+		summarizeBy: none
+		sourceColumn: c_phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column c_acctbal
+		dataType: double
+		sourceProviderType: decimal(38, 18)
+		lineageTag: 70747db2-1952-4a44-9e34-f02acd6df63d
+		sourceLineageTag: c_acctbal
+		summarizeBy: sum
+		sourceColumn: c_acctbal
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column c_mktsegment
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: f788c591-3b9a-40ef-bdfa-9208dd4567c0
+		sourceLineageTag: c_mktsegment
+		summarizeBy: none
+		sourceColumn: c_mktsegment
+
+		annotation SummarizationSetBy = Automatic
+
+	column c_comment
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: a6f12304-1c28-4c34-b29a-e07c7a0394ad
+		sourceLineageTag: c_comment
+		summarizeBy: none
+		sourceColumn: c_comment
+
+		annotation SummarizationSetBy = Automatic
+
+	partition customer = entity
+		mode: directLake
+		source
+			entityName: customer
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

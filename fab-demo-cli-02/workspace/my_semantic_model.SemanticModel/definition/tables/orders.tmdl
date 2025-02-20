@@ -1,0 +1,109 @@
+table orders
+	lineageTag: b45d003a-90aa-48ad-bebf-22eaa8cd7573
+	sourceLineageTag: [dbo].[orders]
+
+	column o_orderkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 5b64bb44-730c-4845-8c30-9adc5e5b81b4
+		sourceLineageTag: o_orderkey
+		summarizeBy: sum
+		sourceColumn: o_orderkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column o_custkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: cb7962fb-bf3c-4b5d-aaaf-229fcc3e702b
+		sourceLineageTag: o_custkey
+		summarizeBy: sum
+		sourceColumn: o_custkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column o_orderstatus
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 034a1d5e-2429-43ac-af85-af8f931e063f
+		sourceLineageTag: o_orderstatus
+		summarizeBy: none
+		sourceColumn: o_orderstatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column o_totalprice
+		dataType: double
+		sourceProviderType: decimal(38, 18)
+		lineageTag: d056340c-0853-4ddf-b702-bbc52c95e6fd
+		sourceLineageTag: o_totalprice
+		summarizeBy: sum
+		sourceColumn: o_totalprice
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column o_orderdate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 2c962c48-2cc3-4438-b88f-b212bdcbad62
+		sourceLineageTag: o_orderdate
+		summarizeBy: none
+		sourceColumn: o_orderdate
+
+		annotation SummarizationSetBy = Automatic
+
+	column o_orderpriority
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: e653ae9a-95bf-4c64-a280-4936e0f19736
+		sourceLineageTag: o_orderpriority
+		summarizeBy: none
+		sourceColumn: o_orderpriority
+
+		annotation SummarizationSetBy = Automatic
+
+	column o_clerk
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 03ea4a55-860a-42c4-b2de-2707903a83bf
+		sourceLineageTag: o_clerk
+		summarizeBy: none
+		sourceColumn: o_clerk
+
+		annotation SummarizationSetBy = Automatic
+
+	column o_shippriority
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 81d199cb-9ec3-4dc0-9c3a-7d46fd3aca35
+		sourceLineageTag: o_shippriority
+		summarizeBy: sum
+		sourceColumn: o_shippriority
+
+		annotation SummarizationSetBy = Automatic
+
+	column o_comment
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 95af548c-fd6c-4c2b-86be-4e89e18a83ba
+		sourceLineageTag: o_comment
+		summarizeBy: none
+		sourceColumn: o_comment
+
+		annotation SummarizationSetBy = Automatic
+
+	partition orders = entity
+		mode: directLake
+		source
+			entityName: orders
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

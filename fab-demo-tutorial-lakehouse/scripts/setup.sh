@@ -49,13 +49,12 @@ run_demo() {
     echo -e "\n___ importing a pipeline..."
     run_fab_command "import -f /${_workspace_name}/${_pipeline_name} -i ${staging_dir}/${_pipeline_name}"
 
-    notebooks
+    # notebooks
     echo -e "\n___ importing notebook..."
     for _notebook_name in "${_notebook_names[@]}"; do
         run_fab_command "import -f /${_workspace_name}/${_notebook_name} -i ${staging_dir}/${_notebook_name}"
         run_fab_command "set -f /${_workspace_name}/${_notebook_name} -q lakehouse -i '{\"known_lakehouses\": [{\"id\": \"${_lakehouse_id}\"}],\"default_lakehouse\": \"${_lakehouse_id}\",\"default_lakehouse_name\": \"${_lakehouse_name_no_ext}\",\"default_lakehouse_workspace_id\": \"${_workspace_id}\"}'"
     done
-
     wait
 
     # shortcut

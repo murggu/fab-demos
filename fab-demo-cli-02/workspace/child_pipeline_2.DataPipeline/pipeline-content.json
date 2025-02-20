@@ -1,0 +1,141 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "Wait",
+        "typeProperties": {
+          "waitTimeInSeconds": 1
+        },
+        "name": "Wait1",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "f34ab8f9-0970-9d43-43ea-1ae359ade59f",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "parameter1": {
+              "value": {
+                "value": "@pipeline().parameters.parameter_1",
+                "type": "Expression"
+              },
+              "type": "string"
+            }
+          }
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Notebook21",
+        "dependsOn": [
+          {
+            "activity": "Wait1",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "53ee7809-31d8-bb79-4b90-e3703ef60edf",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "sss1": {
+              "value": "",
+              "type": "string"
+            }
+          }
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "sample_NB",
+        "dependsOn": [
+          {
+            "activity": "Notebook21",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "53ee7809-31d8-bb79-4b90-e3703ef60edf",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "sss11": {
+              "value": {
+                "value": "@pipeline().parameters.parameter_1",
+                "type": "Expression"
+              },
+              "type": "string"
+            }
+          }
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Notebook3",
+        "dependsOn": [
+          {
+            "activity": "sample_NB",
+            "dependencyConditions": [
+              "Failed"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "InvokePipeline",
+        "typeProperties": {
+          "parameters": {},
+          "waitOnCompletion": true,
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "pipelineId": "0de88002-2df4-b937-4763-d99e672d3007",
+          "operationType": "InvokeFabricPipeline"
+        },
+        "externalReferences": {
+          "connection": "7a789297-d7da-4303-8055-f4f13d7f844c"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Invoke pipeline2",
+        "dependsOn": [
+          {
+            "activity": "sample_NB",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "parameter_1": {
+        "type": "String"
+      }
+    }
+  }
+}

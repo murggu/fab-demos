@@ -162,11 +162,21 @@ replace_report_metadata() {
     local report_name=$1
     local semantic_model_id=$2
     local _stg_report_json="$staging_dir/$report_name/definition.pbir"
-    echo $_stg_report_json
 
     jq --arg _semantic_model_id "$semantic_model_id" \
     '.datasetReference.byConnection.pbiModelDatabaseName = $_semantic_model_id' \
         "$_stg_report_json" > "$_stg_report_json.tmp" && mv "$_stg_report_json.tmp" "$_stg_report_json"
+}
+
+replace_string_value_json() {
+    local path=$1
+    local old_string=$2
+    local new_string=$3
+    local _stg_json="$staging_dir/$path"
+
+    if [[ -f "$_stg_json" ]]; then
+        sed -i "s|$old_string|$new_string|g" "$_stg_json"
+    fi
 }
 
 # fab specific

@@ -1,0 +1,188 @@
+table lineitem
+	lineageTag: 3b0fbb6f-7fb6-4494-9aee-7c1adaccc571
+	sourceLineageTag: [dbo].[lineitem]
+
+	column l_orderkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 17e0cdf4-8324-4ee3-b97a-6e3360bfa45f
+		sourceLineageTag: l_orderkey
+		summarizeBy: sum
+		sourceColumn: l_orderkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_partkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: ae4b6e4e-c946-4346-8627-95434d2b6820
+		sourceLineageTag: l_partkey
+		summarizeBy: sum
+		sourceColumn: l_partkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_suppkey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 43242e5a-89ad-4c89-9809-0c6e86b0281b
+		sourceLineageTag: l_suppkey
+		summarizeBy: sum
+		sourceColumn: l_suppkey
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_linenumber
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 8ed972ab-b303-475a-8fb9-6266d9ccf908
+		sourceLineageTag: l_linenumber
+		summarizeBy: sum
+		sourceColumn: l_linenumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_quantity
+		dataType: double
+		sourceProviderType: decimal(38, 18)
+		lineageTag: 4b19c0c2-1a8f-447a-9120-67150cd9d0ce
+		sourceLineageTag: l_quantity
+		summarizeBy: sum
+		sourceColumn: l_quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column l_extendedprice
+		dataType: double
+		sourceProviderType: decimal(38, 18)
+		lineageTag: b96404d3-8563-42f6-91b8-10eadcc9f58e
+		sourceLineageTag: l_extendedprice
+		summarizeBy: sum
+		sourceColumn: l_extendedprice
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column l_discount
+		dataType: double
+		sourceProviderType: decimal(38, 18)
+		lineageTag: 85e5e82c-69c4-46ff-9a85-0cce9c784d5b
+		sourceLineageTag: l_discount
+		summarizeBy: sum
+		sourceColumn: l_discount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column l_tax
+		dataType: double
+		sourceProviderType: decimal(38, 18)
+		lineageTag: 21668049-0f61-4d9b-8388-606f6215a220
+		sourceLineageTag: l_tax
+		summarizeBy: sum
+		sourceColumn: l_tax
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column l_returnflag
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 9153763a-933c-402d-964a-1e6e781f3453
+		sourceLineageTag: l_returnflag
+		summarizeBy: none
+		sourceColumn: l_returnflag
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_linestatus
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 89e042b3-305a-47a8-a838-f10e2635e97e
+		sourceLineageTag: l_linestatus
+		summarizeBy: none
+		sourceColumn: l_linestatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_shipdate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: b88e57e7-ddf8-4b48-91ad-a2f32fca246d
+		sourceLineageTag: l_shipdate
+		summarizeBy: none
+		sourceColumn: l_shipdate
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_commitdate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 881b60ed-758d-48c8-9f5e-dac7ed4aaa65
+		sourceLineageTag: l_commitdate
+		summarizeBy: none
+		sourceColumn: l_commitdate
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_receiptdate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 0ebe2742-ed0f-49eb-865c-febdc8fec13d
+		sourceLineageTag: l_receiptdate
+		summarizeBy: none
+		sourceColumn: l_receiptdate
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_shipinstruct
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 3f5b36c8-f933-4e05-875f-89ed27a5a5ed
+		sourceLineageTag: l_shipinstruct
+		summarizeBy: none
+		sourceColumn: l_shipinstruct
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_shipmode
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 5493e8c4-0ba1-4dee-a103-ee737b12b31b
+		sourceLineageTag: l_shipmode
+		summarizeBy: none
+		sourceColumn: l_shipmode
+
+		annotation SummarizationSetBy = Automatic
+
+	column l_comment
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: d0903c4a-98fc-43ad-9679-9a46395368d4
+		sourceLineageTag: l_comment
+		summarizeBy: none
+		sourceColumn: l_comment
+
+		annotation SummarizationSetBy = Automatic
+
+	partition lineitem = entity
+		mode: directLake
+		source
+			entityName: lineitem
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+
