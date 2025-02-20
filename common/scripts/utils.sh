@@ -114,18 +114,60 @@ replace_kqlqueryset_connection() {
     "$_stg_json" > "$_stg_json.tmp" && mv "$_stg_json.tmp" "$_stg_json"
 }
 
-replace_string_value_on_table() {
+replace_string_value() {
     local semmodel_name=$1
-    local table_name=$2
+    local path=$2
     local old_string=$3
     local new_string=$4
-    local _stg_semmodel_tmdl="$staging_dir/$semmodel_name/definition/tables/$table_name.tmdl"
+    local _stg_semmodel_tmdl="$staging_dir/$semmodel_name/$path"
 
     if [[ -f "$_stg_semmodel_tmdl" ]]; then
         sed -i "s|$old_string|$new_string|g" "$_stg_semmodel_tmdl"
     fi
 }
 
+replace_pipeline_metadata() {
+    local pipeline_name=$1
+    local workspace_id=$2
+    local lakehouse_id=$3
+    local connection_id_blob=$4
+    local _stg_pip_json="$staging_dir/$pipeline_name/pipeline-content.json"
+
+    jq --arg _workspace_id "$workspace_id" \
+    --arg _lakehouse_id "$lakehouse_id" \
+    --arg _connection_id "$connection_id_blob" \
+    '.properties.activities[].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.workspaceId = $_workspace_id |
+        .properties.activities[].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.artifactId = $_lakehouse_id |
+        .properties.activities[].typeProperties.source.datasetSettings.externalReferences.connection = $_connection_id' \
+        "$_stg_pip_json" > "$_stg_pip_json.tmp" && mv "$_stg_pip_json.tmp" "$_stg_pip_json"
+}
+
+replace_semanticmodel_metadata() {
+    local sem_model_name=$1
+    local lakehouse_conn_string=$2
+    local lakehouse_conn_id=$3
+    local _stg_tmdl_expressions="$staging_dir/$sem_model_name/definition/expressions.tmdl"
+
+    content=$(cat "$_stg_tmdl_expressions")
+
+    old_string_1="XUO7C7SW7ONUHHLEI7JMT7CN3E-5NMTCG4VCUAELMP2UGNFR7CLCI.datawarehouse.fabric.microsoft.com"
+    old_string_2="5ec27d10-f4e8-402c-8707-6c54fe94ef5c"
+
+    content="${content//$old_string_1/$lakehouse_conn_string}"
+    content="${content//$old_string_2/$lakehouse_conn_id}"
+    echo "$content" > "$_stg_tmdl_expressions"
+}
+
+replace_report_metadata() {
+    local report_name=$1
+    local semantic_model_id=$2
+    local _stg_report_json="$staging_dir/$report_name/definition.pbir"
+    echo $_stg_report_json
+
+    jq --arg _semantic_model_id "$semantic_model_id" \
+    '.datasetReference.byConnection.pbiModelDatabaseName = $_semantic_model_id' \
+        "$_stg_report_json" > "$_stg_report_json.tmp" && mv "$_stg_report_json.tmp" "$_stg_report_json"
+}
 
 # fab specific
 

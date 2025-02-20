@@ -53,8 +53,8 @@ run_demo() {
 
     wait
 
-    replace_string_value_on_table $_sem_model_name "Kusto Query Result" "https://trd-56czdt1je8qzxvd82u.z7.kusto.fabric.microsoft.com" $_cluster_uri
-    replace_string_value_on_table $_sem_model_name "Kusto Query Result" "286d907e-8bc0-41ea-b41d-4b7188a7ebfd" $_kql_db_id
+    replace_string_value $_sem_model_name "definition/tables/Kusto Query Result.tmdl" "https://trd-56czdt1je8qzxvd82u.z7.kusto.fabric.microsoft.com" $_cluster_uri
+    replace_string_value $_sem_model_name "definition/tables/Kusto Query Result.tmdl" "286d907e-8bc0-41ea-b41d-4b7188a7ebfd" $_kql_db_id
 
     echo -e "\n_ importing a semantic model..."
     run_fab_command "import -f /${_workspace_name}/${_sem_model_name} -i ${staging_dir}/${_sem_model_name}"
