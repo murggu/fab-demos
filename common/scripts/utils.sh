@@ -61,7 +61,9 @@ check_spn_auth() {
         export FAB_CLIENT_SECRET
         export FAB_TENANT_ID
 
+        echo -e "\n_ authentication with spn..."
         run_fab_command "auth login -u $FAB_CLIENT_ID -p $FAB_CLIENT_SECRET --tenant $FAB_TENANT_ID"
+        echo "* Done"
     fi
 }
 
@@ -206,7 +208,7 @@ create_workspace(){
     echo -e "\n_ creating a workspace..."
     run_fab_command "create /${workspace_name}_${suffix}.Workspace -P capacityName=${capacity_name}"
 
-    if [ "$enable_spn_auth" == "true" ]; then
+    if [ "$spn_auth_enabled" == "true" ]; then
         echo -e "\n_ spn deployment; assigning permissions to workspace user..."
         run_fab_command "acl set -f /${workspace_name}_${suffix}.Workspace -I $upn_objectid -R admin"
     fi

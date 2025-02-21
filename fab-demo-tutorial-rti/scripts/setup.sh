@@ -6,7 +6,7 @@
 capacity_name="Trial-20240216T095351Z-aiYznZSl4kS24GSzM6Yejw"
 spn_auth_enabled="true"
 upn_objectid="395d4722-e034-4fe5-a95c-525d5b0adeeb"
-postfix="02"
+postfix="05"
 
 # static, do not change
 workspace_name="_ws_fab_tutorial_rti"
