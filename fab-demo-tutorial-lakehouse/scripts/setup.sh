@@ -3,7 +3,24 @@
 # fab cli
 # demo: lakehouse tutorial
 
-source ./common/scripts/utils.sh
+# params
+capacity_name="info"
+spn_auth_enabled="false"
+
+# static, do not change
+workspace_name="ws_fab_tutorial_lakehouse"
+demo_name="fab-demo-tutorial-lakehouse"
+
+while [[ "$#" -gt 0 ]]; do
+  case $1 in
+    --capacity-name) capacity_name="$2"; shift ;;
+    --spn-auth-enabled) spn_auth_enabled="$2"; shift ;;
+    *) echo "Unknown parameter passed: $1"; exit 1 ;;
+  esac
+  shift
+done
+
+# source ./common/scripts/utils.sh
 read_config
 check_spn_auth
 

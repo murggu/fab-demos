@@ -1,8 +1,22 @@
 #!/bin/bash
 
 CONFIG_FILE="$(dirname "$0")/../config.yml"
+staging_dir="./tmp"
 
 # functions
+
+parse_args() {
+    while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        --capacity-name) capacity_name="$2"; shift ;;
+        --spn-auth-enabled) spn_auth_enabled="$2"; shift ;;
+        --upn-objectid) upn_objectid="$2"; shift ;;
+        --postfix) postfix="$2"; shift ;;
+        *) echo "Unknown parameter passed: $1"; exit 1 ;;
+    esac
+    shift
+    done
+}
 
 read_config() {
     if [[ ! -f "$CONFIG_FILE" ]]; then
@@ -34,8 +48,14 @@ create_staging()  {
     echo "* Done"
 }
 
+clean_up() {
+    echo -e "\n_ cleaning up staging directory..."
+    rm -r  $staging_dir
+    echo "* Done"
+}
+
 check_spn_auth() {
-    if [ "$enable_spn_auth" == "true" ]; then
+    if [ "$spn_auth_enabled" == "true" ]; then
         # use env variables or github secrets
         export FAB_CLIENT_ID
         export FAB_CLIENT_SECRET
@@ -171,7 +191,7 @@ replace_report_metadata() {
 replace_string_value_json() {
     local path=$1
     local old_string=$2
-    local new_string=$3
+    local new_value=$3
     local _stg_json="$staging_dir/$path"
 
     if [[ -f "$_stg_json" ]]; then

@@ -1,0 +1,46 @@
+name: fab:demo-tutorial-rti
+
+on:
+  workflow_dispatch:
+    inputs:
+      capacity_name:
+        description: "Fabric capacity name"
+        required: true
+      spn_auth_enabled:
+        description: "SPN deployment"
+        required: false
+        default: "false"
+      upn_objectid:
+        description: "ObjectId of the user (for SPN deployment)"
+        required: false
+        default: "395d4722-e034-4fe5-a95c-525d5b0adeeb"
+      postfix:
+        description: "Postfix for workspace name"
+        required: false
+        default: "01"
+
+jobs:
+  setup-and-run-cli:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.12"
+
+      - name: Install Fabric CLI
+        run: |
+          python -m pip install dist/fabric_cli-0.1.6-py3-none-any.whl
+      - name: Deploy tutorial
+        env:
+          FAB_TOKEN: ${{ secrets.FAB_TOKEN }}
+          FAB_TOKEN_ONELAKE: ${{ secrets.FAB_TOKEN_ONELAKE }}
+          FAB_TOKEN_AZURE: ${{ secrets.FAB_TOKEN_AZURE }}
+          FAB_TENANT_ID: ${{ secrets.FAB_TENANT_ID }}
+        run: |
+          fab -c "config set fab_encryption_fallback_enabled true"
+          bash fab-demo-tutorial-rti/scripts/setup.sh

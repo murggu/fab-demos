@@ -4,7 +4,6 @@ A collection of deployment demos and scripts that use Fabric CLI.
 
 **One-click deployment demos**
 
-
 - [fab-demo-tutorial-lakehouse](./fab-demo-tutorial-lakehouse/) -  Deploy public Fabric lakehouse tutorial 
 - [fab-demo-rit-lakehouse](./fab-demo-tutorial-rti/) - Deploy public Fabric RTI tutorial 
 - [fab-demo-fuam-monitoring](./fab-demo-fuam-monitoring/) - Deploy Fabric FUAM monitoring solution 
@@ -12,7 +11,6 @@ A collection of deployment demos and scripts that use Fabric CLI.
 - [fab-demo-cli-02](./fab-demo-cli-02/) - Deploy a sample solution using CLI scripts
 
 **Patterns and scripts**
-
 
 - [pbi-fabricclisample](#) - Semantic model and report deployment patterns using CLI
 - [fab-scripts](#) - A collection of scripts using CLI
