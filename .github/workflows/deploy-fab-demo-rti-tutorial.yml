@@ -6,13 +6,9 @@ on:
       capacity_name:
         description: "Fabric capacity name"
         required: true
-      spn_auth_enabled:
-        description: "SPN deployment"
-        required: false
-        default: "false"
       upn_objectid:
         description: "ObjectId of the user (for SPN deployment)"
-        required: false
+        required: true
         default: "395d4722-e034-4fe5-a95c-525d5b0adeeb"
       postfix:
         description: "Postfix for workspace name"
