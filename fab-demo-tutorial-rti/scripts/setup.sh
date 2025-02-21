@@ -3,9 +3,9 @@
 # fab demo: rti tutorial
 
 # default parameters
-capacity_name="Trial-20240216T095351Z-aiYznZSl4kS24GSzM6Yejw"
+capacity_name=""
 spn_auth_enabled="true"
-upn_objectid="395d4722-e034-4fe5-a95c-525d5b0adeeb"
+upn_objectid=""
 postfix="05"
 
 # static, do not change
@@ -13,7 +13,7 @@ workspace_name="_ws_fab_tutorial_rti"
 demo_name="fab-demo-tutorial-rti"
 
 source ./common/scripts/utils.sh
-parse_args
+parse_args "$@"
 check_spn_auth
 
 run_demo() {

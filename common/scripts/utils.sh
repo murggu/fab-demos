@@ -7,14 +7,14 @@ staging_dir="./tmp"
 
 parse_args() {
     while [[ "$#" -gt 0 ]]; do
-    case $1 in
-        --capacity-name) capacity_name="$2"; shift ;;
-        --spn-auth-enabled) spn_auth_enabled="$2"; shift ;;
-        --upn-objectid) upn_objectid="$2"; shift ;;
-        --postfix) postfix="$2"; shift ;;
-        *) echo "Unknown parameter passed: $1"; exit 1 ;;
-    esac
-    shift
+        case $1 in
+            --capacity-name) capacity_name="$2"; shift ;;
+            --spn-auth-enabled) spn_auth_enabled="$2"; shift ;;
+            --upn-objectid) upn_objectid="$2"; shift ;;
+            --postfix) postfix="$2"; shift ;;
+            *) echo "Unknown parameter passed: $1"; exit 1 ;;
+        esac
+        shift
     done
 }
 
