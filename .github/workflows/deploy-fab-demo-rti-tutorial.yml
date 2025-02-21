@@ -32,6 +32,14 @@ jobs:
         run: |
           python -m pip install dist/fabric_cli-0.1.6-py3-none-any.whl
 
+      - name: Set environment variables
+        env:
+          FAB_CLIENT_ID: ${{ secrets.FAB_CLIENT_ID }}
+          FAB_CLIENT_SECRET: ${{ secrets.FAB_CLIENT_SECRET }}
+          FAB_TENANT_ID: ${{ secrets.FAB_TENANT_ID }}
+        run: |
+          echo "Environment variables set."
+
       - name: Deploy tutorial
         env:
           FAB_CLIENT_ID: ${{ secrets.FAB_CLIENT_ID }}
