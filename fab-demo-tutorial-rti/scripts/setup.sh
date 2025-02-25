@@ -35,6 +35,7 @@ run_demo() {
     _workspace_id=$(run_fab_command "get /${_workspace_name} -q id" | tr -d '\r')
 
     # eventhouse
+    EXIT_ON_ERROR=true
     echo -e "\n_ importing an eventhouse..."
     run_fab_command "import -f /${_workspace_name}/${_eventhouse_name} -i ${staging_dir}/${_eventhouse_name}"
     _eventhouse_id=$(run_fab_command "get /${_workspace_name}/${_eventhouse_name} -q id" | tr -d '\r')
