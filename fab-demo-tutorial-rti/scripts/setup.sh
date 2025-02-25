@@ -20,7 +20,7 @@ run_demo() {
 
     # metadata 
     _workspace_name="${workspace_name}_${postfix}.Workspace"
-    _eventhouse_name="Tutorial.EventHouse"
+    _eventhouse_name="Tutorial.Eventhouse"
     _kql_db_name="Tutorial.KQLDatabase"
     _eventstream_name="TutorialEventstream.Eventstream"
     _kql_dh_name="TutorialDashboard.KQLDashboard"
