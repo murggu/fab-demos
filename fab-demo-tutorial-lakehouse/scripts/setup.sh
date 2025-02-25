@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# fab cli
-# demo: lakehouse tutorial
+# fab demo: lakehouse tutorial
 
 # default parameters
 capacity_name=""

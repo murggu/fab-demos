@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # fab demo: rti tutorial
-# set -e  # Exit on first error
 
 # default parameters
 capacity_name=""
@@ -31,6 +30,7 @@ run_demo() {
 
     # workspace
     create_staging
+    EXIT_ON_ERROR=false
     create_workspace $postfix
     _workspace_id=$(run_fab_command "get /${_workspace_name} -q id" | tr -d '\r')
 

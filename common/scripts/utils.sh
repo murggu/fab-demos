@@ -1,6 +1,7 @@
 #!/bin/bash
 
 CONFIG_FILE="$(dirname "$0")/../config.yml"
+EXIT_ON_ERROR=true
 staging_dir="./tmp"
 
 # functions
@@ -38,6 +39,13 @@ read_config() {
 
 run_fab_command() {
   local command=$1
+
+  if [ "$EXIT_ON_ERROR" = true ]; then
+        set -e  # Exit on error
+  else
+        set +e  # Continue on error
+  fi
+
   fab -c "${command}"
 }
 
