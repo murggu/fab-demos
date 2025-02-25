@@ -14,7 +14,6 @@ This includes:
 - 1 semantic model
 - 1 Power BI report
 
-
 ## Instructions
 
 Make sure you have the [Fabric CLI](#) installed. To run a demo:

@@ -16,15 +16,14 @@ This includes:
 
 ## Instructions
 
-Make sure you have the [Fabric CLI](#) installed. To run a demo:
+Make sure you have the [Fabric CLI](/dist/) installed. To run a demo:
 
 **Deploy from local**
 
 1. Clone the repository and jump to demo folder
-2. Update `config.yml` with your desired values
-3. Deploy demo
+2. Deploy demo
     ```console
-    $ ./
+    $ ./fab-demo-tutorial-rti/scripts/setup.sh --capacity-name Trial-20240216T095351Z-aiYznZSl4kS24GSzM6Yejw --postfix 87
     ```
 
 **Deploy using GitHub actions**
@@ -37,4 +36,5 @@ Make sure you have the [Fabric CLI](#) installed. To run a demo:
 ## Notes
 See notes below for additional info:
 
-- TODO
+- Deploy using service principal authentication using: `--capacity-name Trial-20240216T095351Z-aiYznZSl4kS24GSzM6Yejw --postfix 87 --spn_auth_enabled true --upn_objectid=<user-objectid>`
+- `upn_objectid` is used to grant user permission during service principal deployment

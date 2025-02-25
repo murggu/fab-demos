@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # fab demo: rti tutorial
+# set -e  # Exit on first error
 
 # default parameters
 capacity_name=""
-spn_auth_enabled="true"
+spn_auth_enabled="false"
 upn_objectid=""
 postfix="05"
 
@@ -64,8 +65,8 @@ run_demo() {
     wait
 
     # semantic model
-    replace_string_value $_sem_model_name "definition/tables/Kusto Query Result.tmdl" "https://trd-56czdt1je8qzxvd82u.z7.kusto.fabric.microsoft.com" $_cluster_uri
-    replace_string_value $_sem_model_name "definition/tables/Kusto Query Result.tmdl" "286d907e-8bc0-41ea-b41d-4b7188a7ebfd" $_kql_db_id
+    # replace_string_value $_sem_model_name "definition/tables/Kusto Query Result.tmdl" "https://trd-56czdt1je8qzxvd82u.z7.kusto.fabric.microsoft.com" $_cluster_uri
+    # replace_string_value $_sem_model_name "definition/tables/Kusto Query Result.tmdl" "286d907e-8bc0-41ea-b41d-4b7188a7ebfd" $_kql_db_id
     echo -e "\n_ importing a semantic model..."
     run_fab_command "import -f /${_workspace_name}/${_sem_model_name} -i ${staging_dir}/${_sem_model_name}"
     _semantic_model_id=$(run_fab_command "get /${_workspace_name}/${_sem_model_name} -q id" | tr -d '\r')

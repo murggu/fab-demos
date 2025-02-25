@@ -3,33 +3,23 @@
 # fab cli
 # demo: lakehouse tutorial
 
-# params
-capacity_name="info"
-spn_auth_enabled="false"
+# default parameters
+capacity_name=""
+spn_auth_enabled="true"
+upn_objectid=""
+postfix="05"
 
 # static, do not change
-workspace_name="ws_fab_tutorial_lakehouse"
+workspace_name="_ws_fab_tutorial_lakehouse"
 demo_name="fab-demo-tutorial-lakehouse"
 
-while [[ "$#" -gt 0 ]]; do
-  case $1 in
-    --capacity-name) capacity_name="$2"; shift ;;
-    --spn-auth-enabled) spn_auth_enabled="$2"; shift ;;
-    *) echo "Unknown parameter passed: $1"; exit 1 ;;
-  esac
-  shift
-done
-
-# source ./common/scripts/utils.sh
-read_config
+source ./common/scripts/utils.sh
+parse_args "$@"
 check_spn_auth
 
 run_demo() {
-    local postfix=$1
 
-    create_staging
-    create_workspace $postfix
-
+    # metadata 
     _workspace_name="${workspace_name}_${postfix}.Workspace"
     _lakehouse_name_no_ext="wwilakehouse"
     _lakehouse_name="${_lakehouse_name_no_ext}.Lakehouse"
@@ -37,28 +27,31 @@ run_demo() {
     _notebook_names=("01 - Create Delta Tables.Notebook" "02 - Data Transformation - Business Aggregates.Notebook")
     _sem_model_name="wwilakehousesm.SemanticModel"
     _report_name="ProfitReporting.Report"
-
     _sas_token="sv=2022-11-02&ss=b&srt=co&sp=rlx&se=2026-12-31T18:59:36Z&st=2025-01-31T10:59:36Z&spr=https&sig=aL%2FIOiwz2AEj1fL9tRxH%2B4z%2FyfBl8qJ3KXinfPlaSEM%3D"
 
-    # create lakehouse
+    # workspace
+    create_staging
+    create_workspace $postfix
+
+    # lakehouse
     echo -e "\n_ creating a lakehouse..."
     run_fab_command "create /${_workspace_name}/${_lakehouse_name}"
 
-    # create connections
+    # connections
     echo -e "\n_ creating a Blob connection..."
     run_fab_command "create .connections/conn_stfabdemos_blob_${_workspace_name}.Connection -P .connections/example001.Connection -P connectionDetails.type=AzureBlobs,connectionDetails.parameters.account=stfabdemos,connectionDetails.parameters.domain=blob.core.windows.net/fabdata,credentialDetails.type=Anonymous"
 
     echo -e "\n_ creating a ADLS Gen2 connection..."
     run_fab_command "create .connections/conn_stfabdemos_adlsgen2_${_workspace_name}.connection -P connectionDetails.type=AzureDataLakeStorage,connectionDetails.parameters.server=stfabdemos.dfs.core.windows.net,connectionDetails.parameters.path=fabdata,credentialDetails.type=SharedAccessSignature,credentialDetails.Token=$_sas_token"
 
-    _connection_id_blob=$(run_fab_command "get .connections/conn_stfabdemos_blob_${workspace_name}.Connection -q id" | tr -d '\r')
-    _connection_id_adlsgen2=$(run_fab_command "get .connections/conn_stfabdemos_adlsgen2_${workspace_name}.Connection -q id" | tr -d '\r')
+    _connection_id_blob=$(run_fab_command "get .connections/conn_stfabdemos_blob_${_workspace_name}.Connection -q id" | tr -d '\r')
+    _connection_id_adlsgen2=$(run_fab_command "get .connections/conn_stfabdemos_adlsgen2_${_workspace_name}.Connection -q id" | tr -d '\r')
     _workspace_id=$(run_fab_command "get /${_workspace_name} -q id" | tr -d '\r')
     _lakehouse_id=$(run_fab_command "get /${_workspace_name}/${_lakehouse_name} -q id" | tr -d '\r')
     _lakehouse_conn_string=$(run_fab_command "get /${_workspace_name}/${_lakehouse_name} -q properties.sqlEndpointProperties.connectionString" | tr -d '\r')
     _lakehouse_conn_id=$(run_fab_command "get /${_workspace_name}/${_lakehouse_name} -q properties.sqlEndpointProperties.id" | tr -d '\r')
 
-    # deploying items
+    # items
     echo -e "\n_ deploying items..."
 
     # pipeline
@@ -79,15 +72,15 @@ run_demo() {
     run_fab_command "ln /${_workspace_name}/${_lakehouse_name}/Files/wwi-raw-data.Shortcut --type adlsGen2 -i \"{\"location\": \"https://stfabdemos.dfs.core.windows.net/\", \"subpath\": \"fabdata/WideWorldImportersDW\", \"connectionId\": \"${_connection_id_adlsgen2}\"}\" -f"
 
     # running jobs
-    # echo -e "\n_ running jobs..."
-    # echo -e "\n___ running pipeline..."
-    # run_fab_command "job run /${_workspace_name}/${_pipeline_name}"
+    echo -e "\n_ running jobs..."
+    echo -e "\n___ running pipeline..."
+    run_fab_command "job run /${_workspace_name}/${_pipeline_name}"
 
-    # echo -e "\n___ running notebook..."
-    # run_fab_command "job run /${_workspace_name}/01 - Create Delta Tables.Notebook"
+    echo -e "\n___ running notebook..."
+    run_fab_command "job run /${_workspace_name}/01 - Create Delta Tables.Notebook"
 
-    # echo -e "\n___ running notebook..."
-    # run_fab_command "job run /${_workspace_name}/02 - Data Transformation - Business Aggregates.Notebook"
+    echo -e "\n___ running notebook..."
+    run_fab_command "job run /${_workspace_name}/02 - Data Transformation - Business Aggregates.Notebook"
 
     # semantic model
     # replace_string_value $_sem_model_name "definition/expresssions.tmdl" "XUO7C7SW7ONUHHLEI7JMT7CN3E-5NMTCG4VCUAELMP2UGNFR7CLCI.datawarehouse.fabric.microsoft.com" $_lakehouse_conn_string
@@ -104,4 +97,4 @@ run_demo() {
     run_fab_command "import -f /${_workspace_name}/${_report_name} -i ${staging_dir}/${_report_name}"
 }
 
-run_demo "lh01"
+run_demo
