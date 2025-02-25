@@ -23,7 +23,9 @@ Make sure you have the [Fabric CLI](/dist/) installed. To run a demo:
 1. Clone the repository and jump to demo folder
 2. Deploy demo
     ```console
-    $ ./fab-demo-tutorial-rti/scripts/setup.sh --capacity-name Trial-20240216T095351Z-aiYznZSl4kS24GSzM6Yejw --postfix 87
+    $ ./fab-demo-tutorial-rti/scripts/setup.sh \ 
+    --capacity-name Trial-20240216T095351Z-aiYznZSl4kS24GSzM6Yejw \
+    --postfix 87
     ```
 
 **Deploy using GitHub actions**
