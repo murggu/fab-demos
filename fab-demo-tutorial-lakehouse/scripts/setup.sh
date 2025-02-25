@@ -4,7 +4,7 @@
 
 # default parameters
 capacity_name=""
-spn_auth_enabled="true"
+spn_auth_enabled="false"
 upn_objectid=""
 postfix="05"
 
@@ -30,6 +30,7 @@ run_demo() {
 
     # workspace
     create_staging
+    EXIT_ON_ERROR=false
     create_workspace $postfix
 
     # lakehouse
@@ -49,6 +50,8 @@ run_demo() {
     _lakehouse_id=$(run_fab_command "get /${_workspace_name}/${_lakehouse_name} -q id" | tr -d '\r')
     _lakehouse_conn_string=$(run_fab_command "get /${_workspace_name}/${_lakehouse_name} -q properties.sqlEndpointProperties.connectionString" | tr -d '\r')
     _lakehouse_conn_id=$(run_fab_command "get /${_workspace_name}/${_lakehouse_name} -q properties.sqlEndpointProperties.id" | tr -d '\r')
+
+    EXIT_ON_ERROR=true
 
     # items
     echo -e "\n_ deploying items..."
@@ -82,10 +85,9 @@ run_demo() {
     run_fab_command "job run /${_workspace_name}/02 - Data Transformation - Business Aggregates.Notebook"
 
     # semantic model
-    # replace_string_value $_sem_model_name "definition/expresssions.tmdl" "XUO7C7SW7ONUHHLEI7JMT7CN3E-5NMTCG4VCUAELMP2UGNFR7CLCI.datawarehouse.fabric.microsoft.com" $_lakehouse_conn_string
-    # replace_string_value $_sem_model_name "definition/expresssions.tmdl" "5ec27d10-f4e8-402c-8707-6c54fe94ef5c" $_lakehouse_conn_id
+    replace_string_value $_sem_model_name "definition/expressions.tmdl" "XUO7C7SW7ONUHHLEI7JMT7CN3E-5NMTCG4VCUAELMP2UGNFR7CLCI.datawarehouse.fabric.microsoft.com" $_lakehouse_conn_string
+    replace_string_value $_sem_model_name "definition/expressions.tmdl" "5ec27d10-f4e8-402c-8707-6c54fe94ef5c" $_lakehouse_conn_id
     echo -e "\n___ importing a semantic model..."
-    replace_semanticmodel_metadata $_sem_model_name $_lakehouse_conn_string $_lakehouse_conn_id
     run_fab_command "import -f /${_workspace_name}/${_sem_model_name} -i ${staging_dir}/${_sem_model_name}"
 
     # report
@@ -94,6 +96,11 @@ run_demo() {
 
     echo -e "\n___ importing a report..."
     run_fab_command "import -f /${_workspace_name}/${_report_name} -i ${staging_dir}/${_report_name}"
+
+    # open and clean up
+    echo -e "\n_ opening workspace..."
+    run_fab_command "open /${_workspace_name}"
+    clean_up
 }
 
 run_demo

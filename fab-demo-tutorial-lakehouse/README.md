@@ -16,15 +16,16 @@ This includes:
 
 ## Instructions
 
-Make sure you have the [Fabric CLI](#) installed. To run a demo:
+Make sure you have the [Fabric CLI](/dist/) installed. To run the demo:
 
 **Deploy from local**
 
 1. Clone the repository and jump to demo folder
-2. Update `config.yml` with your desired values
-3. Deploy demo
+2. Deploy demo
     ```console
-    $ ./
+    $ ./fab-demo-tutorial-rti/scripts/setup.sh \ 
+    --capacity-name Trial-20240216T095351Z-aiYznZSl4kS24GSzM6Yejw \
+    --postfix 87
     ```
 
 **Deploy using GitHub actions**
@@ -32,10 +33,11 @@ Make sure you have the [Fabric CLI](#) installed. To run a demo:
 1. Fork the repository
 2. Create three secrets in your repository: `FAB_TENANT_ID`, `FAB_CLIENT_ID`, and `FAB_CLIENT_SECRET`
 3. Go to the Actions tab and set up parameters
-4. Run the `deploy-fab-demo-lakehouse-tutorial` workflow
+4. Run the `deploy-fab-demo-rti-tutorial` workflow
     
 ## Notes
 See notes below for additional info:
 
-- This demo sliglty changed the original lakehouse tutorial to deploy it faster. Pipeline copy activity was changed to just one table and a shortcut was added. 
-- TODO spn auth deployment (pipeline).
+- Use `--capacity-name Trial-20240216T095351Z-aiYznZSl4kS24GSzM6Yejw --postfix 87 --spn_auth_enabled true --upn_objectid=<user-objectid>` to deploy using SPN auth from local.
+- `upn_objectid` is used to grant user permission during service principal deployment.
+- Dataflow

@@ -16,7 +16,7 @@ This includes:
 
 ## Instructions
 
-Make sure you have the [Fabric CLI](/dist/) installed. To run a demo:
+Make sure you have the [Fabric CLI](/dist/) installed. To run the demo:
 
 **Deploy from local**
 
@@ -38,5 +38,7 @@ Make sure you have the [Fabric CLI](/dist/) installed. To run a demo:
 ## Notes
 See notes below for additional info:
 
-- Deploy using service principal authentication using: `--capacity-name Trial-20240216T095351Z-aiYznZSl4kS24GSzM6Yejw --postfix 87 --spn_auth_enabled true --upn_objectid=<user-objectid>`
-- `upn_objectid` is used to grant user permission during service principal deployment
+- Use `--capacity-name Trial-20240216T095351Z-aiYznZSl4kS24GSzM6Yejw --postfix 87 --spn_auth_enabled true --upn_objectid=<user-objectid>` to deploy using SPN auth from local.
+- `upn_objectid` is used to grant user permission during service principal deployment.
+- After deployment finished, edit credentials of the semantic model to see data in the Power BI report.
+- This demo excluded the [Reflex item type](https://learn.microsoft.com/en-us/fabric/real-time-intelligence/tutorial-7-set-alert) deployment.
