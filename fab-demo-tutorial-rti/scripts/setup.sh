@@ -5,7 +5,7 @@
 
 # default parameters
 capacity_name=""
-spn_auth_enabled="false"
+spn_auth_enabled="true"
 upn_objectid=""
 postfix="05"
 

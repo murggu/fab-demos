@@ -6,6 +6,10 @@ on:
       capacity_name:
         description: "Fabric capacity name"
         required: true
+      spn_auth_enabled:
+        description: "SPN deployment"
+        required: true
+        default: "true"
       upn_objectid:
         description: "ObjectId of the user (for SPN deployment)"
         required: true
@@ -47,4 +51,4 @@ jobs:
           FAB_TENANT_ID: ${{ secrets.FAB_TENANT_ID }}
         run: |
           fab -c "config set fab_encryption_fallback_enabled true"
-          bash fab-demo-tutorial-rti/scripts/setup.sh --capacity-name ${{ inputs.capacity_name }} --upn-objectid ${{ inputs.upn_objectid }} --postfix ${{ inputs.postfix }}
+          bash fab-demo-tutorial-rti/scripts/setup.sh --capacity-name ${{ inputs.capacity_name }} --spn-auth-enabled ${{ inputs.spn_auth_enabled }} --upn-objectid ${{ inputs.upn_objectid }} --postfix ${{ inputs.postfix }}
