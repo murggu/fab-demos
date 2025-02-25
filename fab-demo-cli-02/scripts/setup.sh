@@ -1,28 +1,42 @@
 #!/bin/bash
 
-# fab cli
-# demo: rti tutorial
+# fab demo: sample 02
+
+# default parameters
+capacity_name=""
+spn_auth_enabled="false"
+upn_objectid=""
+postfix="05"
+
+# static, do not change
+workspace_name="_ws_fab_demo_cli_02"
+demo_name="fab-demo-cli-02"
 
 source ./common/scripts/utils.sh
-read_config
+parse_args "$@"
 check_spn_auth
 
+
 run_demo() {
-    local postfix=$1
 
-    create_staging
-    create_workspace $postfix
-
+    # metadata
     _workspace_name="${workspace_name}_${postfix}.Workspace"
     _lakehouse_names=("TestLH.Lakehouse" "default_lh.Lakehouse")
     _notebook_names=("Notebook_2.Notebook" "sample_NB.Notebook")
     _shortcut_names=("customer" "lineitem" "nation" "orders" "partsupp" "region" "supplier")
     _sem_model_name="my_semantic_model.SemanticModel"
     _adls_gen2_sas="sv=2022-11-02&ss=b&srt=sco&sp=rwdlacyx&se=2026-02-26T18:43:43Z&st=2025-02-20T10:43:43Z&spr=https&sig=jrx84L1RVt4erdXp19X6qfMKXNSeIPjrdpPCyvCgWMM%3D"
-    
+
+    # workspace
+    create_staging
+    EXIT_ON_ERROR=false
+    create_workspace $postfix
+
+    # workspace identity
     echo -e "\n_ creating workspace identity..."
     run_fab_command "create /${_workspace_name}/.managedidentities/notused.managedidentity"
 
+    # lakehouse
     echo -e "\n_ creating lakehouses..."
     for _lakehouse_name in "${_lakehouse_names[@]}"; do
         run_fab_command "create /${_workspace_name}/${_lakehouse_name} -P enableschemas=true" &
@@ -33,7 +47,7 @@ run_demo() {
     echo -e "\n_ creating a ADLS Gen2 connection..."
     run_fab_command "create .connections/fabriccatdemowcus.connection -P connectionDetails.type=AzureDataLakeStorage,connectionDetails.parameters.server=fabriccatdemowcus.dfs.core.windows.net,connectionDetails.parameters.path=/,credentialDetails.type=SharedAccessSignature,credentialDetails.Token=$_adls_gen2_sas"
 
-    # metadata
+    # elements metadata
     _workspace_id=$(run_fab_command "get /${_workspace_name} -q id" | tr -d '\r')
     _lakehouse_test_id=$(run_fab_command "get /${_workspace_name}/TestLH.Lakehouse -q id" | tr -d '\r')
     _lakehouse_default_id=$(run_fab_command "get /${_workspace_name}/default_lh.Lakehouse -q id" | tr -d '\r')
@@ -50,6 +64,8 @@ run_demo() {
         run_fab_command "ln /${_workspace_name}/${_lakehouse_name}/Tables/dbo/${_shortcut_name}.Shortcut --type adlsGen2 -i \"{\"location\": \"https://fabriccatdemowcus.dfs.core.windows.net/\", \"subpath\": \"${_path}\", \"connectionId\": \"${_connection_id_adlsgen2}\"}\" -f"
     done
     wait
+
+    EXIT_ON_ERROR=true
 
     # notebooks
     echo -e "\n_ importing notebook..."
@@ -136,4 +152,4 @@ run_demo() {
     run_fab_command "import -f /${_workspace_name}/${_report_name} -i ${staging_dir}/${_report_name}"
 }
 
-run_demo "01"
+run_demo
