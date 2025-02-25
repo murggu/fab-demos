@@ -22,7 +22,7 @@ run_demo() {
     _workspace_name="${workspace_name}_${postfix}.Workspace"
     _eventhouse_name="Tutorial.EventHouse"
     _kql_db_name="Tutorial.KQLDatabase"
-    _eventstream_name="TutorialEventStream.Eventstream"
+    _eventstream_name="TutorialEventstream.Eventstream"
     _kql_dh_name="TutorialDashboard.KQLDashboard"
     _kql_querysets=("TutorialQueryset.KQLQueryset" "Tutorial_queryset.KQLQueryset")
     _sem_model_name="TutorialReport.SemanticModel"
