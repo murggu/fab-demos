@@ -5,10 +5,9 @@ Scripts to deploy the [lakehouse tutorial](https://learn.microsoft.com/en-us/fab
 This includes:
 - 1 workspace
 - 1 lakehouse, non-schema
-- 2 connections, Blob (public) and ADLS Gen2 (SAS auth)
-- 1 external shortcut ADLS Gen2
-- 1 pipeline
-- 2 notebooks
+- 4 notebooks
+- 1 ML experiment (auto-created by notebooks)
+- 3 ML models (auto-created by notebooks) 
 - 1 semantic model
 - 1 Power BI report
 
@@ -21,7 +20,7 @@ Make sure you have the [Fabric CLI](/dist/) installed. To run the demo:
 1. Clone the repository and jump to demo folder
 2. Deploy demo
     ```console
-    $ ./fab-demo-tutorial-rti/scripts/setup.sh \ 
+    $ ./fab-demo-tutorial-data-science/scripts/setup.sh \ 
     --capacity-name Trial-20240216T095351Z-aiYznZSl4kS24GSzM6Yejw \
     --postfix 87
     ```

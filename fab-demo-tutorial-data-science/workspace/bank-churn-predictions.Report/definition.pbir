@@ -1,0 +1,13 @@
+{
+    "version": "4.0",
+    "datasetReference": {
+        "byConnection": {
+            "connectionString": "Data Source=powerbi://api.powerbi.com/v1.0/myorg/_ws_fab_tutorial_data_science_57;Initial Catalog=bank-churn-predictions;Integrated Security=ClaimsToken",
+            "pbiServiceModelId": null,
+            "pbiModelVirtualServerName": "sobe_wowvirtualserver",
+            "pbiModelDatabaseName": "6649fa45-4bc1-443c-8968-95f21b197650",
+            "name": "EntityDataSource",
+            "connectionType": "pbiServiceXmlaStyleLive"
+        }
+    }
+}
