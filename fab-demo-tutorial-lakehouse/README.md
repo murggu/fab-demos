@@ -31,7 +31,7 @@ Make sure you have the [Fabric CLI](/dist/) installed. To run the demo:
 1. Fork the repository
 2. Create three secrets in your repository: `FAB_TENANT_ID`, `FAB_CLIENT_ID`, and `FAB_CLIENT_SECRET`
 3. Go to the Actions tab and set up parameters
-4. Run the `deploy-fab-demo-rti-tutorial` workflow
+4. Run the `deploy-fab-demo-tutorial-lakehouse` workflow
     
 ## Notes
 See notes below for additional info:
