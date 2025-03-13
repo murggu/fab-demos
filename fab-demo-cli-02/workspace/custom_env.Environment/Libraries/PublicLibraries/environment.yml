@@ -1,3 +1,0 @@
-dependencies:
-  - pip:
-      - sparkmeasure==0.24.0
