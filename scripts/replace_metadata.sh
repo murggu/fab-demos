@@ -66,7 +66,7 @@ replace_kqlqueryset_connection() {
 replace_report_bypath_to_byconnection() {
     local report_name=$1
     local semantic_model_id=$2
-    local _stg_report_json="$staging_dir/$report_name/definition.pbir"
+    local _stg_json="$staging_dir/$report_name/definition.pbir"
     jq --arg _semantic_model_id "$semantic_model_id" \
         '.datasetReference.byPath = null | .datasetReference.byConnection = {
         "connectionString": "Data Source=powerbi://api.powerbi.com/v1.0/myorg/mkdir;Initial Catalog=r3;Integrated Security=ClaimsToken",
