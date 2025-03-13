@@ -2,15 +2,15 @@
 
 A collection of deployment demos and scripts that use Fabric CLI.
 
+- [fab-demo-cli-quickstart](./fab-demo-cli-quickstart/) - Learn how to deploy a sample solution using CLI scripts
 - [fab-demo-tutorial-lakehouse](./fab-demo-tutorial-lakehouse/) -  Deploy public Fabric lakehouse tutorial 
 - [fab-demo-tutorial-rti](./fab-demo-tutorial-rti/) - Deploy public Fabric RTI tutorial 
 - [fab-demo-tutorial-data-science](./fab-demo-tutorial-data-science/) - Deploy public Fabric data science tutorial 
-- [fab-demo-cli-01](./fab-demo-cli-01/) - Deploy a sample solution using CLI scripts
-- [fab-demo-cli-02](./fab-demo-cli-02/) - Deploy a sample solution using CLI scripts
 
 See also:
-- [pbi-fabricclisample](#) - Semantic model and report deployment patterns using CLI
-- [fab-scripts](#) -  Additional collection of scripts.
+
+- [pbi-fabricclisample](https://github.com/RuiRomano/pbi-fabricclisample) - Semantic model and report deployment patterns using CLI
+- [fuam-basic-cli](https://github.com/GT-Analytics/fuam-basic-cli) - FUAM deployment using CLI.
 
     
 ## Questions? Ideas? Bugs?
