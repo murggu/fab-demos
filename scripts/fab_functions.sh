@@ -45,7 +45,7 @@ import_eventhouse() {
     local _workspace_name=$1
     local _eventhouse_name=$2
     echo -e "\n_ importing an eventhouse..."
-    run_fab_command "import -f /${_workspace_name}/${_eventhouse_name} -i ${staging_dir}/${_eventhouse_name}"
+    run_fab_command "import -f /${_workspace_name}/${abbreviations["Eventhouse"]}_${_eventhouse_name} -i ${staging_dir}/${_eventhouse_name}"
 }
 
 import_kql_database() {
@@ -54,7 +54,7 @@ import_kql_database() {
     local _eventhouse_id=$3
     replace_kql_database_parent_eventhouse $_kql_db_name $_eventhouse_id
     echo -e "\n_ importing a kql database..."
-    run_fab_command "import -f /${_workspace_name}/${_kql_db_name} -i ${staging_dir}/${_kql_db_name}"
+    run_fab_command "import -f /${_workspace_name}/${abbreviations["KQLDatabase"]}_${_kql_db_name} -i ${staging_dir}/${_kql_db_name}"
 }
 
 import_eventstream() {
@@ -64,7 +64,7 @@ import_eventstream() {
     local _kql_db_id=$4
     replace_eventstream_destination_kql_database $_eventstream_name $_workspace_id $_kql_db_id
     echo -e "\n_ importing an eventstream..."
-    run_fab_command "import -f /${_workspace_name}/${_eventstream_name} -i ${staging_dir}/${_eventstream_name}"
+    run_fab_command "import -f /${_workspace_name}/${abbreviations["Eventstream"]}_${_eventstream_name} -i ${staging_dir}/${_eventstream_name}"
 }
 
 import_kql_dashboard() {
@@ -75,7 +75,7 @@ import_kql_dashboard() {
     local _cluster_uri=$5
     replace_kql_dashboard_datasource $_kql_dh_name $_workspace_id $_kql_db_id $_cluster_uri
     echo -e "\n_ importing a kql dashboard..."
-    run_fab_command "import -f /${_workspace_name}/${_kql_dh_name} -i ${staging_dir}/${_kql_dh_name}"
+    run_fab_command "import -f /${_workspace_name}/${abbreviations["KQLDashboard"]}_${_kql_dh_name} -i ${staging_dir}/${_kql_dh_name}"
 }
 
 import_kql_queryset() {
@@ -85,14 +85,14 @@ import_kql_queryset() {
     local _cluster_uri=$4
     replace_kqlqueryset_connection $_query_set $_kql_db_id $_cluster_uri
     echo -e "\n_ importing a kql query set..."
-    run_fab_command "import -f /${_workspace_name}/${_query_set} -i ${staging_dir}/${_query_set}"
+    run_fab_command "import -f /${_workspace_name}/${abbreviations["KQLQueryset"]}_${_query_set} -i ${staging_dir}/${_query_set}"
 }
 
 import_semantic_model() {
     local _workspace_name=$1
     local _sem_model_name=$2
     echo -e "\n_ importing a semantic model..."
-    run_fab_command "import -f /${_workspace_name}/${_sem_model_name} -i ${staging_dir}/${_sem_model_name}"
+    run_fab_command "import -f /${_workspace_name}/${abbreviations["SemanticModel"]}_${_sem_model_name} -i ${staging_dir}/${_sem_model_name}"
 }
 
 import_powerbi_report() {
@@ -101,7 +101,7 @@ import_powerbi_report() {
     local _semantic_model_id=$3
     replace_report_bypath_to_byconnection $_report_name $_semantic_model_id
     echo -e "\n_ importing a powerbi report..."
-    run_fab_command "import -f /${_workspace_name}/${_report_name} -i ${staging_dir}/${_report_name}"
+    run_fab_command "import -f /${_workspace_name}/${abbreviations["Report"]}_${_report_name} -i ${staging_dir}/${_report_name}"
 }
 
 open_workspace() {
