@@ -12,7 +12,7 @@ postfix="05"
 workspace_name="_ws_fab_tutorial_lakehouse"
 demo_name="fab-demo-tutorial-lakehouse"
 
-source ./common/scripts/utils.sh
+source ./scripts/utils.sh
 parse_args "$@"
 check_spn_auth
 
