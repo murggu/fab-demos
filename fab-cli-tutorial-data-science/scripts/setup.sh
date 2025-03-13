@@ -10,7 +10,7 @@ postfix="05"
 
 # static, do not change
 workspace_name="_ws_fab_tutorial_data_science"
-demo_name="fab-demo-tutorial-data-science"
+demo_name="fab-cli-tutorial-data-science"
 
 source ./scripts/utils.sh
 parse_args "$@"

@@ -10,7 +10,7 @@ postfix="19"
 
 # static, do not change
 workspace_name="fab_tutorial_rti"
-demo_name="fab-demo-tutorial-rti"
+demo_name="fab-cli-tutorial-rti"
 
 source ./scripts/utils.sh
 parse_args "$@"

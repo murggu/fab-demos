@@ -10,7 +10,7 @@ postfix="05"
 
 # static, do not change
 workspace_name="_ws_fab_tutorial_lakehouse"
-demo_name="fab-demo-tutorial-lakehouse"
+demo_name="fab-cli-tutorial-lakehouse"
 
 source ./scripts/utils.sh
 parse_args "$@"
