@@ -48,8 +48,13 @@ run_demo() {
     _connection_id_adlsgen2=$(run_fab_command "get .connections/conn_stfabdemos_adlsgen2_${_workspace_name}.Connection -q id" | tr -d '\r')
     _workspace_id=$(run_fab_command "get /${_workspace_name} -q id" | tr -d '\r')
     _lakehouse_id=$(run_fab_command "get /${_workspace_name}/${_lakehouse_name} -q id" | tr -d '\r')
-    _lakehouse_conn_string=$(run_fab_command "get /${_workspace_name}/${_lakehouse_name} -q properties.sqlEndpointProperties.connectionString" | tr -d '\r')
+    
     _lakehouse_conn_id=$(run_fab_command "get /${_workspace_name}/${_lakehouse_name} -q properties.sqlEndpointProperties.id" | tr -d '\r')
+    while [ -z "$_lakehouse_conn_id" ]; do
+        sleep 5
+        _lakehouse_conn_id=$(run_fab_command "get /${_workspace_name}/${_lakehouse_name} -q properties.sqlEndpointProperties.id" | tr -d '\r')
+    done
+    _lakehouse_conn_string=$(run_fab_command "get /${_workspace_name}/${_lakehouse_name} -q properties.sqlEndpointProperties.connectionString" | tr -d '\r')
 
     EXIT_ON_ERROR=true
 
