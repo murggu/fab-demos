@@ -18,7 +18,7 @@
         "dataIngestionMode": "ProcessedIngestion",
         "workspaceId": "00000000-0000-0000-0000-000000000000",
         "itemId": "88a7ebfd-4b71-b41d-41ea-8bc0286d907e",
-        "databaseName": "kdb_Tutorial",
+        "databaseName": "Tutorial",
         "tableName": "RawData",
         "inputSerialization": {
           "type": "Json",

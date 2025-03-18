@@ -95,10 +95,14 @@ replace_pipeline_metadata() {
     local lakehouse_id=$3
     local connection_id_blob=$4
     local _stg_pip_json="$staging_dir/$pipeline_name/pipeline-content.json"
-    replace_json_value "$_stg_pip_json" --arg _workspace_id "$workspace_id" --arg _lakehouse_id "$lakehouse_id" --arg _connection_id "$connection_id_blob" \
-        '.properties.activities[].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.workspaceId = $_workspace_id |
+
+    jq --arg _workspace_id "$workspace_id" \
+    --arg _lakehouse_id "$lakehouse_id" \
+    --arg _connection_id "$connection_id_blob" \
+    '.properties.activities[].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.workspaceId = $_workspace_id |
         .properties.activities[].typeProperties.sink.datasetSettings.linkedService.properties.typeProperties.artifactId = $_lakehouse_id |
-        .properties.activities[].typeProperties.source.datasetSettings.externalReferences.connection = $_connection_id'
+        .properties.activities[].typeProperties.source.datasetSettings.externalReferences.connection = $_connection_id' \
+        "$_stg_pip_json" > "$_stg_pip_json.tmp" && mv "$_stg_pip_json.tmp" "$_stg_pip_json"
 }
 
 # Replace semantic model metadata with lakehouse connection string and ID
