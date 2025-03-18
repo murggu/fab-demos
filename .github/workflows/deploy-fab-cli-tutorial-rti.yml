@@ -1,4 +1,4 @@
-name: fab:demo-tutorial-lakehouse
+name: fab:cli-tutorial-rti
 
 on:
   workflow_dispatch:
@@ -22,7 +22,7 @@ on:
 
 jobs:
   deploy-demo:
-    name: Deploy Lakehouse Tutorial
+    name: Deploy RTI Tutorial
     runs-on: ubuntu-latest
 
     steps:
@@ -53,4 +53,4 @@ jobs:
           FAB_TENANT_ID: ${{ secrets.FAB_TENANT_ID }}
         run: |
           fab -c "config set fab_encryption_fallback_enabled true"
-          bash fab-demo-tutorial-lakehouse/scripts/setup.sh --capacity-name ${{ inputs.capacity_name }} --spn-auth-enabled ${{ inputs.spn_auth_enabled }} --upn-objectid ${{ inputs.upn_objectid }} --postfix ${{ inputs.postfix }}
+          bash fab-cli-tutorial-rti/scripts/setup.sh --capacity-name ${{ inputs.capacity_name }} --spn-auth-enabled ${{ inputs.spn_auth_enabled }} --upn-objectid ${{ inputs.upn_objectid }} --postfix ${{ inputs.postfix }}
