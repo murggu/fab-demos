@@ -120,3 +120,15 @@ open_workspace() {
     echo -e "\n_ opening workspace..."
     run_fab_command "open /${_workspace_name}"
 }
+
+# Function to get the value of an element
+get_fab_property() {
+    local element_path=$1
+    local property=$2
+    local value=$(run_fab_command "get $element_path -q $property" | tr -d '\r')
+    while [[ "$value" == "None" || -z "$value" ]]; do
+        sleep 5
+        local value=$(run_fab_command "get $element_path -q $property" | tr -d '\r')
+    done
+    echo "$value"
+}

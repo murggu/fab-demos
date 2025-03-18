@@ -48,16 +48,12 @@ run_demo() {
     run_fab_command "create .connections/${_connection_adlsgen2_name} -P connectionDetails.type=AzureDataLakeStorage,connectionDetails.parameters.server=stfabdemos.dfs.core.windows.net,connectionDetails.parameters.path=fabdata,credentialDetails.type=SharedAccessSignature,credentialDetails.Token=$_sas_token"
 
     # metadata
-    _connection_id_blob=$(run_fab_command "get .connections/${_connection_blob_name} -q id" | tr -d '\r')
-    _connection_id_adlsgen2=$(run_fab_command "get .connections/${_connection_adlsgen2_name} -q id" | tr -d '\r')
-    _lakehouse_id=$(run_fab_command "get /${_workspace_name}/${_lakehouse_name} -q id" | tr -d '\r')
+    _connection_id_blob=$(get_fab_property "/.connections/${_connection_blob_name}" "id")
+    _connection_id_adlsgen2=$(get_fab_property "/.connections/${_connection_adlsgen2_name}" "id")
+    _lakehouse_id=$(get_fab_property "/${_workspace_name}/${_lakehouse_name}" "id")
     
-    _lakehouse_conn_id=$(run_fab_command "get /${_workspace_name}/${_lakehouse_name} -q properties.sqlEndpointProperties.id" | tr -d '\r')
-    while [ -z "$_lakehouse_conn_id" ]; do
-        sleep 5
-        _lakehouse_conn_id=$(run_fab_command "get /${_workspace_name}/${_lakehouse_name} -q properties.sqlEndpointProperties.id" | tr -d '\r')
-    done
-    _lakehouse_conn_string=$(run_fab_command "get /${_workspace_name}/${_lakehouse_name} -q properties.sqlEndpointProperties.connectionString" | tr -d '\r')
+    _lakehouse_conn_id=$(get_fab_property "/${_workspace_name}/${_lakehouse_name}" "properties.sqlEndpointProperties.id")
+    _lakehouse_conn_string=$(get_fab_property "/${_workspace_name}/${_lakehouse_name}" "properties.sqlEndpointProperties.connectionString")
 
     # pipeline
     EXIT_ON_ERROR=true
@@ -91,7 +87,7 @@ run_demo() {
 
     # semantic model
     import_semantic_model $_workspace_name $_sem_model_name
-    _semantic_model_id=$(run_fab_command "get /${_workspace_name}/${_sem_model_name} -q id" | tr -d '\r')
+    _semantic_model_id=$(get_fab_property "/${_workspace_name}/${_sem_model_name}" "id")
 
     # report
     import_powerbi_report $_workspace_name $_report_name $_semantic_model_id
