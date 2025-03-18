@@ -1,4 +1,4 @@
-# fab-demo-tutorial-lakehouse
+# fab-cli-tutorial-lakehouse
 
 Scripts to deploy the [lakehouse tutorial](https://learn.microsoft.com/en-us/fabric/data-engineering/tutorial-lakehouse-introduction) into your Fabric workspace.
 
@@ -21,7 +21,7 @@ Make sure you have the [Fabric CLI](/dist/) installed. To run the demo:
 1. Clone the repository and jump to demo folder
 2. Deploy demo
     ```console
-    $ ./fab-demo-tutorial-rti/scripts/setup.sh \ 
+    $ ./fab-cli-tutorial-rti/scripts/setup.sh \ 
     --capacity-name Trial-20240216T095351Z-aiYznZSl4kS24GSzM6Yejw \
     --postfix 87
     ```
@@ -31,7 +31,7 @@ Make sure you have the [Fabric CLI](/dist/) installed. To run the demo:
 1. Fork the repository
 2. Create three secrets in your repository: `FAB_TENANT_ID`, `FAB_CLIENT_ID`, and `FAB_CLIENT_SECRET`
 3. Go to the Actions tab and set up parameters
-4. Run the `deploy-fab-demo-tutorial-lakehouse` workflow
+4. Run the `deploy-fab-cli-tutorial-lakehouse` workflow
     
 ## Notes
 See notes below for additional info:
