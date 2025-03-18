@@ -1,0 +1,56 @@
+name: fab:cli-tutorial-lakehouse
+
+on:
+  workflow_dispatch:
+    inputs:
+      capacity_name:
+        description: "Fabric capacity name"
+        required: true
+        default: "Trial-20240216T095351Z-aiYznZSl4kS24GSzM6Yejw"
+      spn_auth_enabled:
+        description: "SPN deployment"
+        required: true
+        default: "true"
+      upn_objectid:
+        description: "ObjectId of the user (for SPN deployment)"
+        required: true
+        default: "395d4722-e034-4fe5-a95c-525d5b0adeeb"
+      postfix:
+        description: "Postfix for workspace name"
+        required: false
+        default: "01"
+
+jobs:
+  deploy-demo:
+    name: Deploy Lakehouse Tutorial
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.12"
+
+      - name: Install Fabric CLI
+        run: |
+          python -m pip install dist/fabric_cli-0.1.8-py3-none-any.whl
+
+      - name: Set environment variables
+        env:
+          FAB_CLIENT_ID: ${{ secrets.FAB_CLIENT_ID }}
+          FAB_CLIENT_SECRET: ${{ secrets.FAB_CLIENT_SECRET }}
+          FAB_TENANT_ID: ${{ secrets.FAB_TENANT_ID }}
+        run: |
+          echo "Environment variables set."
+
+      - name: Deploy tutorial
+        env:
+          FAB_CLIENT_ID: ${{ secrets.FAB_CLIENT_ID }}
+          FAB_CLIENT_SECRET: ${{ secrets.FAB_CLIENT_SECRET }}
+          FAB_TENANT_ID: ${{ secrets.FAB_TENANT_ID }}
+        run: |
+          fab -c "config set fab_encryption_fallback_enabled true"
+          bash fab-cli-tutorial-lakehouse/scripts/setup.sh --capacity-name ${{ inputs.capacity_name }} --spn-auth-enabled ${{ inputs.spn_auth_enabled }} --upn-objectid ${{ inputs.upn_objectid }} --postfix ${{ inputs.postfix }}
