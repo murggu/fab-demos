@@ -6,7 +6,7 @@ on:
       capacity_name:
         description: "Fabric capacity name"
         required: true
-        default: "Trial-20240216T095351Z-aiYznZSl4kS24GSzM6Yejw"
+        default: "Trial-20250701T110839Z-12C56gJzUkyJbd03O9TP2w"
       spn_auth_enabled:
         description: "SPN deployment"
         required: true
